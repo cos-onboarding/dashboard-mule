@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+    <flow name="searchBy">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="roleId" value="#[payload.roleId]" doc:name="Variable"/>
+        <db:select config-ref="MySQL_Configuration" doc:name="MatchRole">
+            <db:parameterized-query><![CDATA[${sql.matchRole}]]></db:parameterized-query>
+        </db:select>
+        <set-variable variableName="roleName" value="#[payload[0].role_name]" doc:name="RoleName"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="payload[0].role_name=='RSO'">
+                <set-payload value="${RSO.Search_by}" doc:name="RSO"/>
+                <set-variable variableName="param" value="#[payload]" doc:name="Param"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                    <db:parameterized-query><![CDATA[SELECT DISTINCT(g.Status) FROM (SELECT 
+  Application_ID,
+  Application_Type,
+  Entity_Type,
+  Company_Name,
+  Customer_ID,
+  Category,
+  STATUS,
+  Remark,
+  Appointment_Date_Time,
+  Confirmed_Venue,
+  Last_Modified_Date,
+  Received_Date,
+  Referral_Source,
+  Account_Number,
+  Urgency,
+  Contact_Person,
+  Contact_Number,
+  Handling_BBO,
+  All_Document_Uploaded,
+  New_Document_Uploaded,
+  Form_Completed,
+  Screening_Completed_BBO 
+FROM
+  cos_application ) g]]></db:parameterized-query>
+                </db:select>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;RSO&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='CCC TH'">
+               <set-payload value="${CCC_TH.Search_by}" doc:name="CCC_TH"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='CCC Agent'">
+               <set-payload value="${CCC_Agent.Search_by}" doc:name="CCC_Agent"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;CCC_Agent&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BBO'">
+               <set-payload value="${BBO.Search_by}" doc:name="BBO"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;BBO&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BBC CM/TH'">
+                <set-payload value="${BBC_CM_TH.Search_by}" doc:name="BBC_CM_TH"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;BBC_CM_TH&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Case Assginer'">
+               <set-payload value="${SD_Case_Assigner.Search_by}" doc:name="SD Case Assginer"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;SD Case Assginer&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Maker'">
+                <set-payload value="${SD_Maker.Search_by}" doc:name="SD Maker"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;SD Maker&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BA Lead'">
+                <set-payload value="${BA_Lead.Search_by}" doc:name="BA Lead"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;BA Lead&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BA'">
+                <set-payload value="${BA.Search_by}" doc:name="BA"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;BA&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Maintenance'">
+               <set-payload value="${SD_Maintenance.Search_by}" doc:name="SD Maintenance"/>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="split"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="&quot;SD Maintenance&quot;" level="INFO" doc:name="Logger"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;Error Message&quot;:&quot;Role not found&quot;}" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+
+
+    </flow>
+
+</mule>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+	<flow name="fields">
+		<dw:transform-message doc:name="Transform Message">
+			<dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+		</dw:transform-message>
+		<set-variable variableName="roleId" value="#[payload.roleId]"
+			doc:name="Variable" />
+		<logger message="#[flowVars.roleId]" level="INFO" doc:name="Logger" />
+		<db:select config-ref="MySQL_Configuration" doc:name="MatchRole">
+			<db:parameterized-query><![CDATA[${sql.matchRole}]]></db:parameterized-query>
+		</db:select>
+		<set-variable variableName="roleName" value="#[payload[0].role_name]"
+			doc:name="RoleName" />
+		<logger message="#[payload]" level="INFO" doc:name="Logger" />
+		<choice doc:name="Choice">
+			<when expression="payload[0].role_name=='RSO'">
+				<set-payload value="${RSO.Search_Result}" doc:name="RSO_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;RSO&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='CCC TH'">
+				<set-payload value="${CCC_TH.Search_Result}" doc:name="CCC_TH_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='CCC Agent'">
+				<set-payload value="${CCC_Agent.Search_Result}" doc:name="CCC_Agent_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;CCC_Agent&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='BBO'">
+				<set-payload value="${BBO.Search_Result}" doc:name="BBO_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;BBO&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='BBC CM/TH'">
+				<set-payload value="${BBC_CM_TH.Search_Result}" doc:name="BBC_CM_TH_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;BBC_CM_TH&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='SD Case Assginer'">
+				<set-payload value="${SD_Case_Assigner.Search_Result}" doc:name="SD_Case_Assigner_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;SD_Case_Assigner&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='SD Maker'">
+				<set-payload value="${SD_Maker.Search_Result}" doc:name="SD_Maker_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;SD_Maker&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='BA Lead'">
+				<set-payload value="${BA_Lead.Search_Result}" doc:name="BA_Lead_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;BA_Lead&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='BA'">
+				<set-payload value="${BA.Search_Result}" doc:name="BA_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;BA&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<when expression="payload[0].role_name=='SD Maintenance'">
+				<set-payload value="${SD_Maintenance.Search_Result}" doc:name="SD_Maintenance_Fields" />
+				<set-payload value="#[payload.toString().split(&quot;,&quot;)]"
+					doc:name="Set Payload" />
+				<dw:transform-message doc:name="Transform Message">
+					<dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+				</dw:transform-message>
+				<set-payload value="#[payload]" doc:name="Set Payload" />
+				<logger message="#[payload]" level="INFO" doc:name="Logger" />
+				<logger message="&quot;SD_Maintenance&quot;" level="INFO" doc:name="Logger" />
+			</when>
+			<otherwise>
+				<set-payload
+					value="{&quot;Error Message&quot;:&quot;Role not found&quot;}"
+					doc:name="ErrorMsg" />
+			</otherwise>
+		</choice>
+	</flow>
+
+</mule>

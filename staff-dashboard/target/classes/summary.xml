@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+    <flow name="summary">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="roleId" value="#[payload.roleId]" doc:name="Variable"/>
+        <db:select config-ref="MySQL_Configuration" doc:name="MatchRole">
+            <db:parameterized-query><![CDATA[${sql.matchRole}]]></db:parameterized-query>
+        </db:select>
+        <set-variable variableName="roleName" value="#[payload[0].role_name]" doc:name="RoleName"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="payload[0].role_name=='RSO'">
+                <set-payload value="${RSO.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="RSO_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="RSO_Summary">
+                    <db:parameterized-query><![CDATA[
+	                    SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) as total 
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						    'All My Cases',
+						    'OBS Maintenance',
+						    'Under Review by BA',
+						    'Follow Up Returned to BA',
+						    'Case Assign by BA',
+						    'Under Lvl 2 Approval by BA Lead',
+						    'Under Review by SD',
+						    'Follow Up by Received from BBO - SD',
+						    'Case returned by BA',
+						    'Preprocessing',
+						    'Under Review by CM',
+						    'Pending Client Meeting',
+						    'BBO Processing',
+						    'BA Follow Up by BBO - BA',
+						    'Follow Up by BBO - Pre-submission',
+						    'KYC Follow Up by BBO - SD',
+						    'OBS Maintenance Follow Up by BBO',
+						    'Pending RSO Allocation',
+						    'Rejected',
+						    'Canceled',
+						    'Account Opened'
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;RSO&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='CCC TH'">
+                <set-payload value="${CCC_TH.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="CCC_TH_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="CCC_TH_Summary">
+                    <db:parameterized-query><![CDATA[
+	                    SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) as total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						    'All My Cases',
+						    'OBS Maintenance',
+						    'Under Review by BA',
+						    'Follow Up Returned to BA',
+						    'Case Assign by BA',
+						    'Under Lvl 2 Approval by BA Lead',
+						    'Under Review by SD',
+						    'Follow Up by Received from BBO - SD',
+						    'Case returned by BA',
+						    'Preprocessing',
+						    'Under Review by CM',
+						    'Pending Client Meeting',
+						    'BBO Processing',
+						    'BA Follow Up by BBO - BA',
+						    'Follow Up by BBO - Pre-submission',
+						    'KYC Follow Up by BBO - SD',
+						    'OBS Maintenance Follow Up by BBO',
+						    'Pending RSO Allocation',
+						    'Pending for Handling',
+						    'Pending Customer Submission',
+						    'Pending CCC Allocation',
+						    'Pending - Missing Documents from Customer (CCC)',
+						    'Pending - Missing Documents from Customer',
+						    'Rejected',
+						    'Canceled',
+						    'Account Opened'
+						  ) 
+						GROUP BY ca.status ]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='CCC Agent'">
+                <set-payload value="${CCC_Agent.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="CCC_Agent_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="CCC_Agent_Summary">
+                    <db:parameterized-query><![CDATA[
+	                    SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						   'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Case Assign by BA',
+						'Under Lvl 2 Approval by BA Lead',
+						'Under Review by SD',
+						'Follow Up by Received from BBO - SD',
+						'Case returned by BA',
+						'Preprocessing',
+						'Under Review by CM',
+						'Pending Client Meeting',
+						'BBO Processing',
+						'BA Follow Up by BBO - BA',
+						'Follow Up by BBO - Pre-submission',
+						'KYC Follow Up by BBO - SD',
+						'OBS Maintenance Follow Up by BBO',
+						'Pending RSO Allocation',
+						'Pending for Handling',
+						'Rejected',
+						'Canceled',
+						'Account Opened'
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;CCC_Agent&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BBO'">
+                <set-payload value="${BBO.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="BBO_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="BBO_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Case Assign by BA',
+						'Under Lvl 2 Approval by BA Lead',
+						'Under Review by SD',
+						'Follow Up by Received from BBO - SD',
+						'Case returned by BA',
+						'Preprocessing',
+						'Under Review by CM',
+						'Pending Client Meeting',
+						'BBO Processing',
+						'BA Follow Up by BBO - BA',
+						'Follow Up by BBO - Pre-submission',
+						'KYC Follow Up by BBO - SD',
+						'OBS Maintenance Follow Up by BBO',
+						'Rejected',
+						'Canceled',
+						'Account Opened'
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BBO&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BBC CM/TH'">
+                <set-payload value="${BBC_CM_TH.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="BBC_CM/TH_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="BBC_CM/TH_Summary">
+                    <db:parameterized-query><![CDATA[
+	                    SELECT 
+							  ca.status,
+							  COUNT(ca.Application_ID) AS total
+							FROM
+							  cos_application ca 
+							WHERE ca.status IN (
+							'All My Cases',
+							'OBS Maintenance',
+							'Under Review by BA',
+							'Follow Up Returned to BA',
+							'Case Assign by BA',
+							'Under Lvl 2 Approval by BA Lead',
+							'Under Review by SD',
+							'Follow Up by Received from BBO - SD',
+							'Case returned by BA',
+							'Preprocessing',
+							'Under Review by CM',
+							'Rejected',
+							'Canceled',
+							'Account Opened'
+							  ) 
+							GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BBC_CM/TH&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Case Assginer'">
+                <set-payload value="${SD_Case_Assigner.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="SD_Case_Assginer_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="SD_Case_Assginer_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Case Assign by BA',
+						'Under Lvl 2 Approval by BA Lead',
+						'Under Review by SD',
+						'Follow Up by Received from BBO - SD',
+						'Case returned by BA',
+						'Preprocessing',
+						'Rejected',
+						'Canceled',
+						'Account Opened'    
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD_Case_Assginer&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Maker'">
+                <set-payload value="${SD_Maker.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="SD_Maker_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="SD_Maker_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						
+						'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Case Assign by BA',
+						'Under Lvl 2 Approval by BA Lead',
+						'Under Review by SD',
+						'Follow Up by Received from BBO - SD',
+						'Case returned by BA',
+						'Rejected',
+						'Canceled',
+						'Account Opened'  
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD_Maker&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BA Lead'">
+                <set-payload value="${BA_Lead.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="BA Lead_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="BA_Lead_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						
+						'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Case Assign by BA',
+						'Under Lvl 2 Approval by BA Lead',
+						'Rejected',
+						'Canceled',
+						'Account Opened'                                                  
+						
+						  ) 
+						GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BA_Lead&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='BA'">
+                <set-payload value="${BA.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="BA_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="BA_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+						  ca.status,
+						  COUNT(ca.Application_ID) AS total
+						FROM
+						  cos_application ca 
+						WHERE ca.status IN (
+						
+						
+						'All My Cases',
+						'OBS Maintenance',
+						'Under Review by BA',
+						'Follow Up Returned to BA',
+						'Rejected',
+						'Canceled',
+						'Account Opened'  
+						
+						  ) 
+						GROUP BY ca.status ]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BA&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='SD Maintenance'">
+                <set-payload value="${SD_Maintenance.Summary}" doc:name="Set Payload"/>
+                <set-variable variableName="status" value="#[payload]" doc:name="SD_Maintenance_Status"/>
+                <db:select config-ref="MySQL_Configuration" doc:name="SD_Maintenance_Summary">
+                    <db:parameterized-query><![CDATA[
+                    	SELECT 
+							  ca.status,
+							  COUNT(ca.Application_ID) AS total
+							FROM
+							  cos_application ca 
+							WHERE ca.status IN (
+							
+							'All My Cases',
+							'OBS Maintenance',
+							'Rejected',
+							'Canceled',
+							'Account Opened'  
+							  ) 
+							GROUP BY ca.status]]>
+					</db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD_Maintenance&quot;" level="INFO" doc:name="Logger"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;Error Message&quot;:&quot;Role not found&quot;}" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+
+
+    </flow>
+
+</mule>

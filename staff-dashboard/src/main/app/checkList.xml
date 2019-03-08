@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+    <flow name="checkList">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="roleId" value="#[payload.roleId]" doc:name="Variable"/>
+        <set-variable variableName="status" value="#[payload.status]" doc:name="Status"/>
+        <db:select config-ref="MySQL_Configuration" doc:name="MatchRole">
+            <db:parameterized-query><![CDATA[${sql.matchRole}]]></db:parameterized-query>
+        </db:select>
+        <set-variable variableName="roleName" value="#[payload[0].role_name]" doc:name="RoleName"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[flowVars.status]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="payload[0].role_name=='CCC TH'">
+                <choice doc:name="CCC TH Choice">
+                    <when expression="flowVars.status==&quot;Pending for Handling&quot;">
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+[
+	"Completed CDS Checking",
+	"No Clarification with Customer BBO"
+]   ]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="null" doc:name="Set Payload"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <when expression="payload[0].role_name=='CCC Agent'">
+                <choice doc:name="CCC Agent Choice">
+                    <when expression="flowVars.status==&quot;Pending for Handling&quot;">
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+[
+	"Completed CDS Checking",
+	"No Clarification with Customer BBO"
+]   ]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="null" doc:name="Set Payload"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <when expression="payload[0].role_name=='BBO'">
+                <choice doc:name="BBO Choice">
+                    <when expression="#[flowVars.status==&quot;Pending Client Meeting&quot; || flowVars.status==&quot;BBO Processing&quot;]">
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+[
+	"Form Completed",
+	"Screening",
+	"FATCA CRS",
+	"All Documents Uploaded",
+	"All Documents Validated"
+]   ]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="null" doc:name="Set Payload"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <when expression="payload[0].role_name=='SD Maker'">
+                <choice doc:name="SD Maker Choice">
+                    <when expression="flowVars.status==&quot;Under review by SD&quot;">
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+[
+	"GWIS item created",
+	"Completed FATCA checking",
+	"Completed KYC checking"
+]   ]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="&quot;CCC_TH&quot;" level="INFO" doc:name="Logger"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="null" doc:name="Set Payload"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <otherwise>
+                <set-payload value="null" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+
+
+    </flow>
+
+</mule>

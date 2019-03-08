@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:context="http://www.springframework.org/schema/context" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+    <flow name="applications">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="roleId" value="#[payload.roleId]" doc:name="Variable"/>
+        <db:select config-ref="MySQL_Configuration" doc:name="MatchRole">
+            <db:parameterized-query><![CDATA[${sql.matchRole}]]></db:parameterized-query>
+        </db:select>
+        <set-variable variableName="roleName" value="#[payload[0].role_name]" doc:name="RoleName"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="payload[0].role_name=='RSO'">
+                <db:select config-ref="MySQL_Configuration" doc:name="RSO.Search_Result">
+                    <db:parameterized-query><![CDATA[${sql.RSOSearchResult}]]></db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark,
+	Appointment_Date_Time:$.Appointment_Date_Time,
+	Confirmed_Venue:$.Confirmed_Venue,
+	Last_Modified_Date:$.Last_Modified_Date,
+	Received_Date:$.Received_Date,
+	Referral_Source:$.Referral_Source,
+	Account_Number:$.Account_Number,
+	Urgency:$.Urgency,
+	Contact_Person:$.Contact_Person,
+	Contact_Number:$.Contact_Number,
+	Handling_BBO:$.Handling_BBO,
+	All_Document_Uploaded:$.All_Document_Uploaded,
+	New_Document_Uploaded:$.New_Document_Uploaded,
+	Form_Completed:$.Form_Completed,
+	Screening_Completed_BBO:$.Screening_Completed_BBO
+}]]></dw:set-payload>
+                </dw:transform-message>
+
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;RSO&quot;" level="INFO" doc:name="Logger"/>
+            </when>
+            <when expression="payload[0].role_name=='CCC TH'">
+                <db:select config-ref="MySQL_Configuration" doc:name="CCC_TH.Search_Result">
+                    <db:parameterized-query><![CDATA[${sql.CCCTHSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark,
+	Appointment_Date_Time:$.Appointment_Date_Time,
+	Confirmed_Venue:$.Confirmed_Venue,
+	Handling_Call_Agent:$.Handling_Call_Agent,
+	Task_Due_Date:$.Task_Due_Date,
+	Document_Last_Upload_Date:$.Document_Last_Upload_Date,
+	Last_Modified_Date:$.Last_Modified_Date,
+	Screening_Completed_CCC:$.Screening_Completed_CCC,
+	No_Clarification_with_Customer:$.No_Clarification_with_Customer
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;CCCTH&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='CCC Agent'">
+                <db:select config-ref="MySQL_Configuration" doc:name="CCC_Agent.Search_Result">
+                    <db:parameterized-query><![CDATA[${sql.CCCAgentSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark,
+	Appointment_Date_Time:$.Appointment_Date_Time,
+	Confirmed_Venue:$.Confirmed_Venue,
+	Handling_Call_Agent:$.Handling_Call_Agent,
+	Task_Due_Date:$.Task_Due_Date,
+	Document_Last_Upload_Date:$.Document_Last_Upload_Date,
+	Last_Modified_Date:$.Last_Modified_Date,
+	Contact_Person:$.Contact_Person,
+	Contact_Number:$.Contact_Number,
+	Screening_Completed_CCC:$.Screening_Completed_CCC,
+	No_Clarification_with_Customer:$.No_Clarification_with_Customer
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;CCC Agent&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='BBO'">
+                <db:select config-ref="MySQL_Configuration" doc:name="BBO.Search_Result">
+                    <db:parameterized-query><![CDATA[${sql.BBOSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark,
+	Appointment_Date_Time:$.Appointment_Date_Time,
+	Confirmed_Venue:$.Confirmed_Venue,
+	Last_Modified_Date:$.Last_Modified_Date,
+	Received_Date:$.Received_Date,
+	Referral_Source:$.Referral_Source,
+	Account_Number:$.Account_Number,
+	Urgency:$.Urgency,
+	Contact_Person:$.Contact_Person,
+	Contact_Number:$.Contact_Number,
+	Handling_BBO:$.Handling_BBO,
+	All_Document_Uploaded:$.All_Document_Uploaded,
+	New_Document_Uploaded:$.New_Document_Uploaded,
+	Form_Completed:$.Form_Completed,
+	Screening_Completed_BBO:$.Screening_Completed_BBO
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BBO&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='BBC CM/TH'">
+                <db:select config-ref="MySQL_Configuration" doc:name="BBCCMTH.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.BBCCMTHSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark,
+	Appointment_Date_Time:$.Appointment_Date_Time,
+	Confirmed_Venue:$.Confirmed_Venue,
+	Last_Modified_Date:$.Last_Modified_Date,
+	Received_Date:$.Received_Date,
+	Referral_Source:$.Referral_Source,
+	Account_Number:$.Account_Number,
+	Urgency:$.Urgency,
+	Contact_Person:$.Contact_Person,
+	Contact_Number:$.Contact_Number,
+	Handling_BBO:$.Handling_BBO,
+	All_Document_Uploaded:$.All_Document_Uploaded,
+	New_Document_Uploaded:$.New_Document_Uploaded,
+	Form_Completed:$.Form_Completed,
+	Screening_Completed_BBO:$.Screening_Completed_BBO
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BBC CM/TH&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='SD Case Assginer'">
+                <db:select config-ref="MySQL_Configuration" doc:name="SDCaseAssigner.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.SDCaseAssignerSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD Case Assginer&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='SD Maker'">
+                <db:select config-ref="MySQL_Configuration" doc:name="SDMaker.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.SDMakerSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD Maker&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='BA Lead'">
+                <db:select config-ref="MySQL_Configuration" doc:name="BALead.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.BALeadSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BA Lead&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='BA'">
+                <db:select config-ref="MySQL_Configuration" doc:name="BA.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.BASearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;BA&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <when expression="payload[0].role_name=='SD Maintenance'">
+                <db:select config-ref="MySQL_Configuration" doc:name="SDMaintenance.SearchResult">
+                    <db:parameterized-query><![CDATA[${sql.SDMaintenanceSearchResult}]]></db:parameterized-query>
+                </db:select>
+
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Application_ID:$.Application_ID,
+	Application_Type:$.Application_Type,
+	Entity_Type:$.Entity_Type,
+	Company_Name:$.Company_Name,
+	Customer_ID:$.Customer_ID,
+	Category:$.Category,
+	Status:$.Status,
+	Remark:$.Remark
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                <logger message="&quot;SD Maintenance&quot;" level="INFO" doc:name="Logger"/>
+
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;Error Message&quot;:&quot;Role not found&quot;}" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+
+    </flow>
+
+</mule>

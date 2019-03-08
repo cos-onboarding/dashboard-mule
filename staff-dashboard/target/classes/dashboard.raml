@@ -1,0 +1,61 @@
+#%RAML 1.0
+title: American Flights API
+version: 1.0
+#Simple demonstration of raml json schema.
+#Using '!inclue' to reference external schema json files.
+
+schemas:
+  login: !include schemas/login.json
+  loginResult: !include schemas/loginResult.json
+  
+  
+#µÇÂ½
+/userLogin:
+  post:
+    body:
+      application/json:     
+    responses:
+      200:
+        body:
+          application/json: 
+/searchResult:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/fields:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/summary:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/searchBy:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/checkList:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+            

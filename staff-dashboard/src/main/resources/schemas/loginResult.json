@@ -1,0 +1,11 @@
+{
+	"type":"object",
+	"$schema":"http://json-schema.org/draft-04/schema",
+	"id": "http://jsonschema.net",
+	"properties": {
+    	"status": {
+      		"type": "boolean",
+     		"enum": [true,false]
+    	}
+    }
+}
