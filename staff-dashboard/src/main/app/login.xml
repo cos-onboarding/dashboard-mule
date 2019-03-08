@@ -25,14 +25,15 @@ payload]]></dw:set-payload>
         <choice doc:name="Choice">
             <when expression="payload[0].'COUNT(*)'&gt;0">
                 <db:select config-ref="MySQL_Configuration" doc:name="Database">
-                    <db:parameterized-query><![CDATA[${sql.selectRoleId}]]></db:parameterized-query>
+                    <db:parameterized-query><![CDATA[${sql.selectRoleIdRoleName}]]></db:parameterized-query>
                 </db:select>
                 <dw:transform-message doc:name="Transform Message">
                     <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 {
-	roleId:payload[0].role_id
+	roleId:payload[0].role_id,
+	roleName:payload[0].role_name
 }]]></dw:set-payload>
                 </dw:transform-message>
                 <set-payload value="#[payload]" doc:name="Success"/>
