@@ -76,7 +76,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,
@@ -226,7 +225,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,
@@ -252,7 +250,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,
@@ -278,7 +275,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,
@@ -304,7 +300,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,
@@ -330,7 +325,6 @@ payload map {
 ---
 payload map {
 	Application_ID:$.Application_ID,
-	Quick_View:"",
 	Application_Type:$.Application_Type,
 	Entity_Type:$.Entity_Type,
 	Company_Name:$.Company_Name,

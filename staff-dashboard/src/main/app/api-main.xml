@@ -20,6 +20,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/fields" action="post" content-type="application/json" flow-ref="fields"/>
         <apikit:flow-mapping resource="/searchBy" action="post" content-type="application/json" flow-ref="searchBy"/>
         <apikit:flow-mapping resource="/checkList" action="post" content-type="application/json" flow-ref="checkList"/>
+        <apikit:flow-mapping resource="/assign" action="post" content-type="application/json" flow-ref="assign"/>
     </apikit:config>
     <context:property-placeholder location="database/db.properties"/>
     <flow name="dashboard-apiRouter">
@@ -43,6 +44,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="dashboard-fields">
         <flow-ref name="fields" doc:name="fields"/>
+    </flow>
+    <flow name="dashboard-assign">
+        <flow-ref name="assign" doc:name="assign"/>
     </flow>
 
 </mule>
