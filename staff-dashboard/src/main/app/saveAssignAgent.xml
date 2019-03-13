@@ -25,15 +25,17 @@ payload]]></dw:set-payload>
                 </db:select>
                 <set-variable variableName="staffName" value="#[payload[0].staff_name]" doc:name="Variable"/>
                 <logger message="#[flowVars.staffName]" level="INFO" doc:name="Logger"/>
-                <foreach collection="#[flowVars.globalVar]" doc:name="For Each">
-                    <set-variable variableName="application_id" value="#[flowVars.globalVar.inboxAppList[counter-1].Application_ID]" doc:name="Variable"/>
+                <foreach collection="#[flowVars.globalVar.inboxAppList]" doc:name="For Each">
+                    <set-payload value="#[payload]" doc:name="Set Payload"/>
+                    <logger message="#[payload]" level="INFO" doc:name="Logger"/>
                     <db:update config-ref="MySQL_Configuration" doc:name="Database">
                         <db:parameterized-query><![CDATA[${sql.updateApplicationStatus}]]></db:parameterized-query>
                     </db:update>
                 </foreach>
                 <set-payload value="{
-	&quot;status&quot;:&quot;success&quot;
-}" doc:name="Success"/>
+    &quot;status&quot;: &quot;success&quot;
+}" doc:name="Success" encoding="UTF-8" mimeType="application/json"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
             </when>
             <otherwise>
                 <set-payload value="{&quot;status&quot;:&quot;fail&quot; }"   doc:name="Fail"/>
