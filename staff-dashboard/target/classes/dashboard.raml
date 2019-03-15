@@ -6,9 +6,10 @@ version: 1.0
 
 schemas:
   login: !include schemas/login.json
-  loginResult: !include schemas/loginResult.json
-  
-  
+  assign: !include schemas/assign.json
+  checkList: !include schemas/checkList.json
+  byRoleId: !include schemas/byRoleId.json
+  saveAssignAgent: !include schemas/saveAssignAgent.json
 #µÇÂ½
 /userLogin:
   post:
@@ -23,6 +24,7 @@ schemas:
   post:
     body:
       application/json:
+        schema: byRoleId
     responses:
       200:
         body:
@@ -31,6 +33,7 @@ schemas:
   post:
     body:
       application/json:
+        schema: byRoleId
     responses:
       200:
         body:
@@ -39,6 +42,7 @@ schemas:
   post:
     body:
       application/json:
+        schema: byRoleId
     responses:
       200:
         body:
@@ -47,6 +51,7 @@ schemas:
   post:
     body:
       application/json:
+        schema: byRoleId
     responses:
       200:
         body:
@@ -55,6 +60,7 @@ schemas:
   post:
     body:
       application/json:
+        schema: checkList
     responses:
       200:
         body:
@@ -63,6 +69,16 @@ schemas:
   post:
     body:
       application/json:
+        schema: assign
+    responses:
+      200:
+        body:
+          application/json:
+/saveAssignAgent:
+  post:
+    body:
+      application/json:
+        schema: saveAssignAgent
     responses:
       200:
         body:
