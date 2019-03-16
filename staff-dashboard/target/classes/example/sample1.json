@@ -1,0 +1,40 @@
+{
+	"CCC TH": {
+		"Search_by": [
+			"Business Center",
+			"Status",
+			"Customer Name",
+			"Application Number",
+			"Customer ID",
+			"BBO Assigned"
+		],
+		"Summary":[
+			"All My Cases",
+			"OBS Maintenance",
+			"Under Review by BA",
+			"Follow Up Returned to BA",
+			"Case Assign by BA",
+			"Under Lvl 2 Approval by BA Lead",
+			"Under Review by SD",
+			"Follow Up by Received from BBO - SD",
+			"Case Returned by BA",
+			"Preprocessing",
+			"Under Review by CM",
+			"Pending Client Meeting",
+			"BBO Processing",
+			"BA Follow Up by BBO - BA",
+			"Follow Up by BBO - Pre-submission",
+			"KYC Follow Up by BBO - SD",
+			"OBS Maintenance Follow Up by BBO",
+			"Pending RSO Allocation",
+			"Pending for Handling",
+			"Pending for Customer Submission",
+			"Pending CCC Allocation",
+			"Pending - Missing Documents from Customer (CCC)",
+			"Pending - Missing Documents from Customer",
+			"Rejected",
+			"Canceled",
+			"Account Opened"                                                  
+		  ]
+	}
+}

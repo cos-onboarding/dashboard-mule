@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
-    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8082" doc:name="HTTP Listener Configuration"/>
     <db:mysql-config name="MySQL_Configuration" host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" doc:name="MySQL Configuration"/>
     <apikit:config name="Router" raml="dashboard.raml" consoleEnabled="false" consolePath="console" keepRamlBaseUri="false" doc:name="Router">
         <apikit:flow-mapping resource="/userLogin" action="post" content-type="application/json" flow-ref="login"/>
@@ -20,8 +20,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/fields" action="post" content-type="application/json" flow-ref="fields"/>
         <apikit:flow-mapping resource="/searchBy" action="post" content-type="application/json" flow-ref="searchBy"/>
         <apikit:flow-mapping resource="/checkList" action="post" content-type="application/json" flow-ref="checkList"/>
-        <apikit:flow-mapping resource="/assign" action="post" content-type="application/json" flow-ref="assign"/>
-        <apikit:flow-mapping resource="/saveAssignAgent" action="post" content-type="application/json" flow-ref="saveAssignAgent"/>
+        <apikit:flow-mapping resource="/readJSON" action="post" content-type="application/json" flow-ref="readJSON"/>
     </apikit:config>
     <context:property-placeholder location="database/db.properties"/>
     <flow name="dashboard-apiRouter">
@@ -43,14 +42,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <flow name="dashboard-checkList">
         <flow-ref name="checkList" doc:name="checkList"/>
     </flow>
+    <flow name="dashboard-readJSON">
+        <flow-ref name="readJSON" doc:name="readJSON"/>
+    </flow>
     <flow name="dashboard-fields">
         <flow-ref name="fields" doc:name="fields"/>
-    </flow>
-    <flow name="dashboard-assign">
-        <flow-ref name="assign" doc:name="assign"/>
-    </flow>
-    <flow name="dashboard-saveAssignAgent">
-        <flow-ref name="saveAssignAgent" doc:name="saveAssignAgent"/>
     </flow>
 
 </mule>
