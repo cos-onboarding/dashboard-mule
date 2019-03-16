@@ -1,0 +1,12 @@
+{
+	"type":"object",
+	"$schema":"http://json-schema.org/draft-04/schema",
+	"id": "http://jsonschema.net",
+	"properties":{
+			"role_name":{
+				"type":"string",
+				"maxLength":20
+			}
+		},
+	"required":["role_name"]
+}
