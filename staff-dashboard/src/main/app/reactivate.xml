@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <flow name="reactivate">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+
+        <set-variable doc:name="ApplicationId" value="#[payload.applicationId]" variableName="applicationId"/>
+        <set-variable variableName="roleName" value="#[payload.roleName]" doc:name="RoleName"/>
+
+        <logger level="INFO" doc:name="Logger" message="#[payload]"/>
+        <choice doc:name="Choice">
+            <when expression="flowVars.roleName=='CCC_TH'">
+                <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_application` SET STATUS = 'Pending CCC allocation' WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_status_info` SET application_status = 'Pending CCC allocation' WHERE application_id = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                </transactional>
+            </when>
+            <when expression="flowVars.roleName=='CCC_Agent'">
+                <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_application` SET STATUS = 'Pending CCC allocation' WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_status_info` SET application_status = 'Pending CCC allocation' WHERE application_id = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                </transactional>
+            </when>
+            <when expression="flowVars.roleName=='RSO'">
+                <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_application` SET STATUS = 'Pending RSO allocation' WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_status_info` SET application_status = 'Pending RSO allocation' WHERE application_id = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                </transactional>
+            </when>
+            <when expression="flowVars.roleName=='BBO'">
+                <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_application` SET STATUS = 'Pending RSO allocation' WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_status_info` SET application_status = 'Pending RSO allocation' WHERE application_id = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                </transactional>
+            </when>
+            <when expression="flowVars.roleName=='BBC_CM/TH'">
+                <transactional action="ALWAYS_BEGIN" doc:name="Transactional">
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_application` SET STATUS = 'Pending RSO allocation' WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                    <db:update config-ref="MySQL_Configuration" doc:name="Database">
+                        <db:parameterized-query><![CDATA[UPDATE `cos_status_info` SET application_status = 'Pending RSO allocation' WHERE application_id = #[applicationId]]]></db:parameterized-query>
+                    </db:update>
+                </transactional>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;msg&quot;:false}" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="payload=1">
+                <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                    <db:parameterized-query><![CDATA[SELECT STATUS FROM cos_application WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
+                </db:select>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	status:payload[0].STATUS,
+    msg: "Status Changed" 
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <set-payload value="#[payload]" doc:name="Success"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;msg&quot;:false}" doc:name="ErrorMsg"/>
+            </otherwise>
+        </choice>
+
+
+    </flow>
+</mule>
