@@ -24,6 +24,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/saveAssignAgent" action="post" content-type="application/json" flow-ref="saveAssignAgent"/>
         <apikit:flow-mapping resource="/getRemark" action="post" content-type="application/json" flow-ref="dashboard-getRemarkList"/>
         <apikit:flow-mapping resource="/saveRemark" action="post" content-type="application/json" flow-ref="dashboard-saveRemark"/>
+        <apikit:flow-mapping resource="/saveRejectReason" action="post" content-type="application/json" flow-ref="saveRejectReason"/>
+
 
     </apikit:config>
     <context:property-placeholder location="database/db.properties"/>
@@ -60,6 +62,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="dashboard-saveRemark">
         <flow-ref name="saveRemark" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="dashboard-saveRejectReason">
+        <flow-ref name="saveRejectReason" doc:name="saveRejectReason"/>
     </flow>
 
 </mule>
