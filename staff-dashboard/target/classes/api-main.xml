@@ -14,17 +14,18 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
     <db:mysql-config name="MySQL_Configuration" host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" doc:name="MySQL Configuration"/>
     <apikit:config name="Router" raml="dashboard.raml" consoleEnabled="false" consolePath="console" keepRamlBaseUri="false" doc:name="Router">
-        <apikit:flow-mapping resource="/userLogin" action="post" content-type="application/json" flow-ref="login"/>
-        <apikit:flow-mapping resource="/searchResult" action="post" content-type="application/json" flow-ref="applications"/>
-        <apikit:flow-mapping resource="/summary" action="post" content-type="application/json" flow-ref="summary"/>
-        <apikit:flow-mapping resource="/fields" action="post" content-type="application/json" flow-ref="fields"/>
-        <apikit:flow-mapping resource="/searchBy" action="post" content-type="application/json" flow-ref="searchBy"/>
-        <apikit:flow-mapping resource="/checkList" action="post" content-type="application/json" flow-ref="checkList"/>
-        <apikit:flow-mapping resource="/assign" action="post" content-type="application/json" flow-ref="assign"/>
-        <apikit:flow-mapping resource="/saveAssignAgent" action="post" content-type="application/json" flow-ref="saveAssignAgent"/>
+        <apikit:flow-mapping resource="/userLogin" action="post" content-type="application/json" flow-ref="dashboard-login"/>
+        <apikit:flow-mapping resource="/searchResult" action="post" content-type="application/json" flow-ref="dashboard-applications"/>
+        <apikit:flow-mapping resource="/summary" action="post" content-type="application/json" flow-ref="dashboard-summary"/>
+        <apikit:flow-mapping resource="/fields" action="post" content-type="application/json" flow-ref="dashboard-fields"/>
+        <apikit:flow-mapping resource="/searchBy" action="post" content-type="application/json" flow-ref="dashboard-searchBy"/>
+        <apikit:flow-mapping resource="/checkList" action="post" content-type="application/json" flow-ref="dashboard-checkList"/>
+        <apikit:flow-mapping resource="/assign" action="post" content-type="application/json" flow-ref="dashboard-assign"/>
+        <apikit:flow-mapping resource="/saveAssignAgent" action="post" content-type="application/json" flow-ref="dashboard-saveAssignAgent"/>
         <apikit:flow-mapping resource="/getRemark" action="post" content-type="application/json" flow-ref="dashboard-getRemarkList"/>
         <apikit:flow-mapping resource="/saveRemark" action="post" content-type="application/json" flow-ref="dashboard-saveRemark"/>
-        <apikit:flow-mapping resource="/saveRejectReason" action="post" content-type="application/json" flow-ref="saveRejectReason"/>
+        <apikit:flow-mapping resource="/progressFields" action="post" content-type="application/json" flow-ref="dashboard-progressFields"/>
+        <apikit:flow-mapping resource="/progressFilter" action="post" content-type="application/json" flow-ref="dashboard-progressFilter"/>
 
 
     </apikit:config>
@@ -38,6 +39,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="dashboard-applications">
         <flow-ref name="applications" doc:name="applications"/>
+    </flow>
+    <flow name="dashboard-progressFilter">
+        <flow-ref name="progressFilter" doc:name="progressFilter"/>
+    </flow>
+    <flow name="dashboard-progressFields">
+        <flow-ref name="progressFields" doc:name="progressFields"/>
     </flow>
     <flow name="dashboard-searchBy">
         <flow-ref name="searchBy" doc:name="searchBy"/>
@@ -62,9 +69,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="dashboard-saveRemark">
         <flow-ref name="saveRemark" doc:name="Flow Reference"/>
-    </flow>
-    <flow name="dashboard-saveRejectReason">
-        <flow-ref name="saveRejectReason" doc:name="saveRejectReason"/>
     </flow>
 
 </mule>

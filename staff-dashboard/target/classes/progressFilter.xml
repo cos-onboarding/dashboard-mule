@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <flow name="progressFilter">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="params" value="#[payload]" doc:name="InputParams"/>
+        <db:select config-ref="MySQL_Configuration" doc:name="GetRoleId">
+            <db:parameterized-query><![CDATA[${sql.getRoleIdByRoleName}]]></db:parameterized-query>
+        </db:select>
+        <set-variable variableName="roleId" value="#[payload[0].role_id]" doc:name="RoleId"/>
+        <logger message="#[flowVars.roleId]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choose By Role">
+                    <when expression="flowVars.params.roleName=='BBC CM/TH'">
+                        <choice doc:name="Choose By Status">
+                            <when expression="flowVars.params.status=='in progress'">
+                                <set-payload value="${BBC_CM/TH.In_progress}" doc:name="CM In Progress"/>
+                            </when>
+                            <otherwise>
+                                <set-payload value="${BBC_CM/TH.Completed}" doc:name="CM Completed"/>
+                            </otherwise>
+                        </choice>
+                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+                <set-variable variableName="list" value="#[new java.util.ArrayList()]" doc:name="List"/>
+				        <foreach collection="payload" doc:name="For Each">
+				            <set-payload value="#[payload]" doc:name="Set Payload"/>
+                    <set-variable variableName="temp" value="#[payload]" doc:name="Variable"/>
+                    <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    <choice doc:name="Choice">
+                        <when expression="flowVars.temp=='Handling Staff' ">
+                            <db:select config-ref="MySQL_Configuration" doc:name="HandlingStaff">
+                                <db:parameterized-query><![CDATA[${sql.CMHandlingStaff}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-Customer'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingCustomer">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingCustomerCount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-BBO'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingBBO">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingBBOCount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-CM'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingCM">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingCMCount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-SD'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingSD">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingSDCount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-BA'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingBA">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingBACount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <when expression="flowVars.temp=='Pending-Maintenance'">
+                            <db:select config-ref="MySQL_Configuration" doc:name="PendingMaintenance">
+                                <db:parameterized-query><![CDATA[${sql.CMPendingMaintenanceCount}]]></db:parameterized-query>
+                            </db:select>
+                        </when>
+                        <otherwise>
+                            <set-payload value="null" doc:name="Set Payload"/>
+                        </otherwise>
+                    </choice>
+                    <set-payload value="#[flowVars.list.add(payload)]" doc:name="Set Payload"/>
+				        </foreach>
+                <set-payload value="#[flowVars.list]" doc:name="Set Payload"/>
+                    </when>
+                    <when expression="flowVars.params.roleName=='CCC TH'">
+                        <choice doc:name="Choose By Status">
+                            <when expression="flowVars.params.status=='in progress'">
+                                <set-payload value="${CCC_TH.In_progress}" doc:name="CCC_TH In Progress"/>
+                            </when>
+                            <otherwise>
+                                <set-payload value="${CCC_TH.Completed}" doc:name="CCC_TH Completed"/>
+                            </otherwise>
+                        </choice>
+                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+				        <foreach collection="payload" doc:name="For Each">
+				            <set-payload value="#[payload]" doc:name="Set Payload"/>
+                    <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+				        </foreach>
+                    </when>
+                    <otherwise>
+                <choice doc:name="Choose By Status">
+                    <when expression="flowVars.params.status=='in progress'">
+                        <set-payload value="${BA_Lead.In_progress}" doc:name="BA_Lead In progress"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="${BA_Lead.Completed}" doc:name="BA_Lead Completed"/> 
+                    </otherwise>
+                </choice>
+                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+				        <foreach collection="payload" doc:name="For Each">
+				            <set-payload value="#[payload]" doc:name="Set Payload"/>
+				            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+				        </foreach>
+                    </otherwise>
+                </choice>
+        <logger message="#[flowVars.params.roleName]====#[flowVars.params.status]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+</mule>

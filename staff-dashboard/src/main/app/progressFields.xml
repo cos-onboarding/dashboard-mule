@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+	<flow name="progressFields">
+		<dw:transform-message doc:name="Transform Message">
+			<dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+		</dw:transform-message>
+        <set-variable variableName="status" value="#[payload.status]" doc:name="Status"/>
+
+		<set-variable variableName="roleName" value="#[payload.roleName]"
+			doc:name="RoleName" />
+        <choice doc:name="Validate By Status">
+            <when expression="flowVars.status=='in progress' || flowVars.status=='completed'">
+                <choice doc:name="Choose By Role">
+                    <when expression="flowVars.roleName=='BBC CM/TH'">
+                        <choice doc:name="Choose By Status">
+                            <when expression="flowVars.status=='in progress'">
+                                <set-payload value="${BBC_CM/TH.In_progress}" doc:name="CM In Progress"/>
+                            </when>
+                            <otherwise>
+                                <set-payload value="${BBC_CM/TH.Completed}" doc:name="CM Completed"/>
+                            </otherwise>
+                        </choice>
+                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <when expression="flowVars.roleName=='CCC TH'">
+                        <choice doc:name="Choose By Status">
+                            <when expression="flowVars.status=='in progress'">
+                                <set-payload value="${CCC_TH.In_progress}" doc:name="CCC_TH In Progress"/>
+                            </when>
+                            <otherwise>
+                                <set-payload value="${CCC_TH.Completed}" doc:name="CCC_TH Completed"/>
+                            </otherwise>
+                        </choice>
+                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <when expression="flowVars.roleName=='BA Lead'">
+                        <choice doc:name="Choose By Status">
+                            <when expression="flowVars.status=='in progress'">
+                                <set-payload value="${BA_Lead.In_progress}" doc:name="BA_Lead In progress"/>
+                            </when>
+                            <otherwise>
+                                <set-payload value="${BA_Lead.Completed}" doc:name="BA_Lead Completed"/>
+                            </otherwise>
+                        </choice>
+                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace "_" with " "
+---
+payload map {
+	"field":$,
+	"title":normalize($)
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-payload value="#[payload]" doc:name="Set Payload"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="{&quot;ErrorMsg&quot;:&quot;Invalid role!&quot;}" doc:name="Role Previlige Error"/>
+                        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <otherwise>
+                <set-payload value="{&quot;ErrorMsg&quot;:&quot;Invalid status '#[flowVars.status]'!&quot;}" doc:name="status Mismatch Error"/>
+                <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+
+	</flow>
+
+</mule>
