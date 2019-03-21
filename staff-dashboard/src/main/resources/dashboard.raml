@@ -10,7 +10,7 @@ schemas:
   checkList: !include schemas/checkList.json
   byRoleId: !include schemas/byRoleId.json
   saveAssignAgent: !include schemas/saveAssignAgent.json
-#��½
+#µÇÂ½
 /userLogin:
   post:
     body:
@@ -92,7 +92,14 @@ schemas:
       200:
         body:
           application/json:
-          
+/saveRejectReason:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:        
 /getRejectedRoleName:
   post:
     body:
