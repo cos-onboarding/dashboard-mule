@@ -23,16 +23,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 ---
 payload]]></dw:set-payload>
 		</dw:transform-message>
-        <set-variable variableName="status" value="#[payload.status]" doc:name="Status"/>
-
-		<set-variable variableName="roleName" value="#[payload.roleName]"
-			doc:name="RoleName" />
+        <set-variable variableName="params" value="#[payload]" doc:name="InputParams"/>
         <choice doc:name="Validate By Status">
-            <when expression="flowVars.status=='in progress' || flowVars.status=='completed'">
+            <when expression="flowVars.params.progress=='In Progress' || flowVars.params.progress=='Completed'">
                 <choice doc:name="Choose By Role">
-                    <when expression="flowVars.roleName=='BBC CM/TH'">
+                    <when expression="flowVars.params.roleName=='BBC CM/TH'">
                         <choice doc:name="Choose By Status">
-                            <when expression="flowVars.status=='in progress'">
+                            <when expression="flowVars.params.progress=='In Progress'">
                                 <set-payload value="${BBC_CM/TH.In_progress}" doc:name="CM In Progress"/>
                             </when>
                             <otherwise>
@@ -52,11 +49,11 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
                     </when>
-                    <when expression="flowVars.roleName=='CCC TH'">
+                    <when expression="flowVars.params.roleName=='CCC TH'">
                         <choice doc:name="Choose By Status">
-                            <when expression="flowVars.status=='in progress'">
+                            <when expression="flowVars.params.progress=='In Progress'">
                                 <set-payload value="${CCC_TH.In_progress}" doc:name="CCC_TH In Progress"/>
                             </when>
                             <otherwise>
@@ -67,7 +64,7 @@ payload map {
                         <dw:transform-message doc:name="Transform Message">
                             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
-%function normalize(var) var replace "_" with " "
+%function normalize(var) var replace "-" with " "
 ---
 payload map {
 	"field":$,
@@ -76,11 +73,11 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
                     </when>
-                    <when expression="flowVars.roleName=='BA Lead'">
+                    <when expression="flowVars.params.roleName=='BA Lead'">
                         <choice doc:name="Choose By Status">
-                            <when expression="flowVars.status=='in progress'">
+                            <when expression="flowVars.params.progress=='In Progress'">
                                 <set-payload value="${BA_Lead.In_progress}" doc:name="BA_Lead In progress"/>
                             </when>
                             <otherwise>
@@ -91,7 +88,7 @@ payload map {
                         <dw:transform-message doc:name="Transform Message">
                             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
-%function normalize(var) var replace "_" with " "
+%function normalize(var) var replace "-" with " "
 ---
 payload map {
 	"field":$,
@@ -100,7 +97,7 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.roleName]--------#[flowVars.status]" level="INFO" doc:name="Logger"/>
+                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
                     </when>
                     <otherwise>
                         <set-payload value="{&quot;ErrorMsg&quot;:&quot;Invalid role!&quot;}" doc:name="Role Previlige Error"/>

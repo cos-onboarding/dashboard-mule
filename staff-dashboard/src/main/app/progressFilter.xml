@@ -15,104 +15,302 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 ---
 payload]]></dw:set-payload>
         </dw:transform-message>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <set-variable variableName="params" value="#[payload]" doc:name="InputParams"/>
-        <db:select config-ref="MySQL_Configuration" doc:name="GetRoleId">
-            <db:parameterized-query><![CDATA[${sql.getRoleIdByRoleName}]]></db:parameterized-query>
-        </db:select>
-        <set-variable variableName="roleId" value="#[payload[0].role_id]" doc:name="RoleId"/>
-        <logger message="#[flowVars.roleId]" level="INFO" doc:name="Logger"/>
         <choice doc:name="Choose By Role">
                     <when expression="flowVars.params.roleName=='BBC CM/TH'">
-                        <choice doc:name="Choose By Status">
-                            <when expression="flowVars.params.status=='in progress'">
-                                <set-payload value="${BBC_CM/TH.In_progress}" doc:name="CM In Progress"/>
-                            </when>
-                            <otherwise>
-                                <set-payload value="${BBC_CM/TH.Completed}" doc:name="CM Completed"/>
-                            </otherwise>
-                        </choice>
-                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
-                <set-variable variableName="list" value="#[new java.util.ArrayList()]" doc:name="List"/>
-				        <foreach collection="payload" doc:name="For Each">
-				            <set-payload value="#[payload]" doc:name="Set Payload"/>
-                    <set-variable variableName="temp" value="#[payload]" doc:name="Variable"/>
-                    <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                    <choice doc:name="Choice">
-                        <when expression="flowVars.temp=='Handling Staff' ">
-                            <db:select config-ref="MySQL_Configuration" doc:name="Handling Staff">
-                                <db:parameterized-query><![CDATA[${sql.CMHandlingStaff}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-Customer'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="Pending Customer">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingCustomerCount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-BBO'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="PendingBBO">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingBBOCount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-CM'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="PendingCM">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingCMCount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-SD'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="PendingSD">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingSDCount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-BA'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="PendingBA">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingBACount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <when expression="flowVars.temp=='Pending-Maintenance'">
-                            <db:select config-ref="MySQL_Configuration" doc:name="Pending Maintenance">
-                                <db:parameterized-query><![CDATA[${sql.CMPendingMaintenanceCount}]]></db:parameterized-query>
-                            </db:select>
-                        </when>
-                        <otherwise>
-                            <set-payload value="null" doc:name="Set Payload"/>
-                        </otherwise>
-                    </choice>
-                    <set-payload value="#[flowVars.list.add(payload)]" doc:name="Set Payload"/>
-				        </foreach>
-                <set-payload value="#[flowVars.list]" doc:name="Set Payload"/>
+                <set-variable variableName="managedRole" value="'BBO'" doc:name="ManagedRole"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%var currentTime = flowVars.currentTime
+%function normalize(var) var replace "_" or "-" with " "
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Pending-Customer:$.appCount) when $.Category == 'Pending - Customer',
+	(Pending-Customer:0) when $.Category != 'Pending - Customer',
+	(Pending-BBO:$.appCount) when $.Category == 'Pending - BBO',
+	(Pending-BBO:0) when $.Category != 'Pending - BBO',
+	(Pending-CM:$.appCount) when $.Category == 'Pending - CM',
+	(Pending-CM:0) when $.Category != 'Pending - CM',
+	(Pending-SD:$.appCount) when $.Category == 'Pending - SD',
+	(Pending-SD:0) when $.Category != 'Pending - SD',
+    (Pending-BA:$.appCount) when $.Category == 'Pending - BA',
+	(Pending-BA:0) when $.Category != 'Pending - BA',
+	(Pending-Maintenance:$.appCount) when $.Category == 'Pending-Maintenance',
+	(Pending-Maintenance:0) when $.Category != 'Pending-Maintenance',
+	Total_No_of_Pending_Cases:sum ([$.appCount]), 
+	Average_Aging_Time:2.5
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </when>
+                    <otherwise>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Account_Opened:$.appCount) when $.Category == 'Account opened',
+	(Account_Opened:0) when $.Category != 'Account opened',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected',
+	(Canceled:$.appCount) when $.Category == 'Canceled',
+	(Canceled:0) when $.Category != 'Canceled',
+	(Total_Turnaround_Time_for_Account_Opened_Cases:$.appCount) when $.Category == 'Total Turnaround Time for Account Opened Cases',
+	(Total_Turnaround_Time_for_Account_Opened_Cases:0) when $.Category != 'Total Turnaround Time for Account Opened Cases'
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </otherwise>
+                </choice>
+
                     </when>
                     <when expression="flowVars.params.roleName=='CCC TH'">
-                        <choice doc:name="Choose By Status">
-                            <when expression="flowVars.params.status=='in progress'">
-                                <set-payload value="${CCC_TH.In_progress}" doc:name="CCC_TH In Progress"/>
-                            </when>
-                            <otherwise>
-                                <set-payload value="${CCC_TH.Completed}" doc:name="CCC_TH Completed"/>
-                            </otherwise>
-                        </choice>
-                        <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
-				        <foreach collection="payload" doc:name="For Each">
-				            <set-payload value="#[payload]" doc:name="Set Payload"/>
-                    <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-				        </foreach>
+                         <set-variable variableName="managedRole" value="'CCC Agent'" doc:name="ManagedRole"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%var currentTime = flowVars.currentTime
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Pending-CCC:$.appCount) when $.Category == 'Pending - CCC',
+	(Pending-CCC:0) when $.Category != 'Pending - CCC',
+	(Pending-Customer:$.appCount) when $.Category == 'Pending - Customer',
+	(Pending-Customer:0) when $.Category != 'Pending - Customer',
+	Total_No_of_Pending_Cases:sum ([$.appCount]), 
+	Average_Aging_Time:4
+}]]></dw:set-payload>
+                        </dw:transform-message>
                     </when>
                     <otherwise>
-                <choice doc:name="Choose By Status">
-                    <when expression="flowVars.params.status=='in progress'">
-                        <set-payload value="${BA_Lead.In_progress}" doc:name="BA_Lead In progress"/>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Case_Referred:$.appCount) when $.Category == 'Case Referred',
+	(Case_Referred:0) when $.Category != 'Case Referred',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected',
+	(Canceled:$.appCount) when $.Category == 'Canceled',
+	(Canceled:0) when $.Category != 'Canceled',
+	(Total_Turnaround_Time_for_Case_Referrals:$.appCount) when $.Category == 'Total Turnaround Time for Case Referrals',
+	(Total_Turnaround_Time_for_Case_Referrals:0) when $.Category != 'Total Turnaround Time for Case Referrals'
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </otherwise>
+                </choice>
+
                     </when>
                     <otherwise>
-                        <set-payload value="${BA_Lead.Completed}" doc:name="BA_Lead Completed"/> 
+                 <set-variable variableName="managedRole" value="'BA'" doc:name="ManagedRole"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%var currentTime = flowVars.currentTime
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+    (Pending-BA:$.appCount) when $.Category == 'Pending - BA',
+	(Pending-BA:0) when $.Category != 'Pending - BA',
+	(Pending-BA-Lead:$.appCount) when $.Category == 'Pending - BA Lead',
+	(Pending-BA-Lead:0) when $.Category != 'Pending - BA Lead',
+	(Pending-BBO:$.appCount) when $.Category == 'Pending - BBO',
+	(Pending-BBO:0) when $.Category != 'Pending - BBO',
+	(Pending-SD:$.appCount) when $.Category == 'Pending - SD',
+	(Pending-SD:0) when $.Category != 'Pending - SD',
+	Total_No_of_Pending_Cases:sum ([$.appCount]), 
+	Average_Aging_Time:2
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </when>
+                    <otherwise>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%function normalize(var) var replace "-" with " "
+---
+{
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
+		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
+		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <set-variable variableName="currentTime" value="#[server.dateTime.toDate()]" doc:name="CurrentTime"/>
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Approved:$.appCount) when $.Category == 'Account opened' or $.Category == 'Approved',
+	(Approved:0) when $.Category != 'Account opened' and $.Category != 'Approved',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected',
+	(Total_Turnaround_Time_for_Case_Approval:sum ([$.appCount])) when $.Category == 'Total Turnaround Time for Case Approval',
+	(Total_Turnaround_Time_for_Case_Approval:0) when $.Category != 'Total Turnaround Time for Case Approval'
+}]]></dw:set-payload>
+                        </dw:transform-message>
                     </otherwise>
                 </choice>
-                <set-payload value="#[payload.toString().split(&quot;,&quot;)]" doc:name="Set Payload"/>
-				        <foreach collection="payload" doc:name="For Each">
-				            <set-payload value="#[payload]" doc:name="Set Payload"/>
-				            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-				        </foreach>
+
                     </otherwise>
                 </choice>
-        <logger message="#[flowVars.params.roleName]====#[flowVars.params.status]" level="INFO" doc:name="Logger"/>
+        <set-payload value="#[payload]" doc:name="Set Payload"/>
+        <logger message="#[flowVars.params.roleName]====#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
     </flow>
 </mule>
