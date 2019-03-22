@@ -27,6 +27,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/saveRejectReason" action="post" content-type="application/json" flow-ref="saveRejectReason"/>
         <apikit:flow-mapping resource="/reactivateStatus" action="post" content-type="application/json" flow-ref="reactivate"/>
         <apikit:flow-mapping resource="/getRejectedRoleName" action="post" content-type="application/json" flow-ref="getRejectedRoleName"/>
+        <apikit:flow-mapping resource="/selectRecjectReason" action="post" content-type="application/json" flow-ref="selectRecjectReason"/>
+
 
     </apikit:config>
     <context:property-placeholder location="database/db.properties"/>
@@ -69,6 +71,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="dashboard-reactivate">
         <flow-ref name="reactivate" doc:name="reactivate"/>
+    </flow>
+    <flow name="dashboard-selectRecjectReason">
+        <flow-ref name="selectRecjectReason" doc:name="selectRecjectReason"/>
     </flow>
     <flow name="getRoleName">
         <flow-ref name="getRejectedRoleName" doc:name="getRoleName"/>
