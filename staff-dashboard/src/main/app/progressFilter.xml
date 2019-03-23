@@ -52,7 +52,7 @@ payload]]></dw:set-payload>
                             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 %var currentTime = flowVars.currentTime
-%function normalize(var) var replace "_" or "-" with " "
+%function normalize(var) var replace "_" with " "
 ---
 payload map {
 	Handling_Staff:$.handling_staff,
@@ -69,7 +69,7 @@ payload map {
 	(Pending-Maintenance:$.appCount) when $.Category == 'Pending-Maintenance',
 	(Pending-Maintenance:0) when $.Category != 'Pending-Maintenance',
 	Total_No_of_Pending_Cases:sum ([$.appCount]), 
-	Average_Aging_Time:2.5
+	Average_Aging_Time:2.5 
 }]]></dw:set-payload>
                         </dw:transform-message>
                     </when>
@@ -185,6 +185,7 @@ payload map {
 		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
 		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
 		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
+		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty,
 		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
 }]]></dw:set-payload>
                         </dw:transform-message>
@@ -213,8 +214,8 @@ payload map {
                 </choice>
 
                     </when>
-                    <otherwise>
-                 <set-variable variableName="managedRole" value="'BA'" doc:name="ManagedRole"/>
+            <when expression="flowVars.params.roleName=='BA Lead'">
+                <set-variable variableName="managedRole" value="'BA'" doc:name="ManagedRole"/>
                 <choice doc:name="Choose By AppStatus">
                     <when expression="flowVars.params.progress=='In Progress'">
                         <dw:transform-message doc:name="In Progress Transform">
@@ -306,6 +307,9 @@ payload map {
                         </dw:transform-message>
                     </otherwise>
                 </choice>
+            </when>
+                    <otherwise>
+                <set-payload value="{&quot;ErrorMsg&quot;:&quot;Wrong Role Login On&quot;}" doc:name="Set Payload"/>
 
                     </otherwise>
                 </choice>

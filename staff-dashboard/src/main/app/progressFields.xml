@@ -64,7 +64,7 @@ payload map {
                         <dw:transform-message doc:name="Transform Message">
                             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
-%function normalize(var) var replace "-" with " "
+%function normalize(var) var replace "_" with " "
 ---
 payload map {
 	"field":$,
@@ -88,7 +88,7 @@ payload map {
                         <dw:transform-message doc:name="Transform Message">
                             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
-%function normalize(var) var replace "-" with " "
+%function normalize(var) var replace "_" with " "
 ---
 payload map {
 	"field":$,
