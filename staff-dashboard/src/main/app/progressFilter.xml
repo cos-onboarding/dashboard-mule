@@ -34,13 +34,37 @@ payload]]></dw:set-payload>
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
 ---
 {
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
@@ -106,13 +130,44 @@ payload map {
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
 ---
 {
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
@@ -182,13 +237,37 @@ payload map {
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
 ---
 {
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
@@ -243,14 +322,44 @@ payload map {
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
 ---
 {
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty,
-		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
@@ -322,13 +431,37 @@ payload map {
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
 ---
 {
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
@@ -392,13 +525,44 @@ payload map {
 %var appointmentTo = flowVars.params.appointmentTo
 %var completedFrom = flowVars.params.completedFrom
 %var completedTo = flowVars.params.completedTo
-%function normalize(var) var replace "-" with " "
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
 ---
 {
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTBvalue != empty and ETBvalue == empty, 
-		(criteria:'AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETBvalue != empty and NTBvalue == empty,
-		(criteria:'AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBvalue != empty and ETBvalue != empty,
-		(criteria:'AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBvalue == empty and ETBvalue == empty
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
 }]]></dw:set-payload>
                         </dw:transform-message>
                         <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
