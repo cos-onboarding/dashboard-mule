@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <flow name="progressFilter">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <set-variable variableName="params" value="#[payload]" doc:name="InputParams"/>
+        <choice doc:name="Choose By Role">
+                    <when expression="flowVars.params.roleName=='BBC CM/TH'">
+                <set-variable variableName="managedRole" value="'BBO'" doc:name="BBC_CM/TH Charge"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
+---
+{
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+    (Pending_Customer:$.appCount) when $.Category == 'Pending - Customer',
+	(Pending_Customer:0) when $.Category != 'Pending - Customer',
+	(Pending_BBO:$.appCount) when $.Category == 'Pending - BBO',
+	(Pending_BBO:0) when $.Category != 'Pending - BBO',
+	(Pending_CM:$.appCount) when $.Category == 'Pending - CM',
+	(Pending_CM:0) when $.Category != 'Pending - CM',
+	(Pending_SD:$.appCount) when $.Category == 'Pending - SD',
+	(Pending_SD:0) when $.Category != 'Pending - SD',
+	(Pending_BA:$.appCount) when $.Category == 'Pending - BA',
+	(Pending_BA:0) when $.Category != 'Pending - BA',
+	(Pending_Maintenance:$.appCount) when $.Category == 'Pending - Maintenance',
+	(Pending_Maintenance:0) when $.Category != 'Pending - Maintenance',
+	Total_No_of_Pending_Cases:sum ([$.appCount])
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <foreach collection="#[payload]" doc:name="For Each">
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveCMInProgress}]]></db:parameterized-query>
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryCMInProgress}]]></db:parameterized-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Pending-Customer:$.Pending_Customer,
+	Pending-BBO:$.Pending_BBO,
+	Pending-CM:$.Pending_CM,
+	Pending-SD:$.Pending_SD,
+	Pending-BA:$.Pending_BA,
+	Pending-Maintenance:$.Pending_Maintenance,
+	Total_No_of_Pending_Cases:$.Total_No_of_Pending_Cases, 
+	Average_Aging_Time:$.Average_Aging_Time
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </when>
+                    <otherwise>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+---
+{
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Account_Opened:$.appCount) when $.Category == 'Account opened',
+	(Account_Opened:0) when $.Category != 'Account opened',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected',
+	(Canceled:$.appCount) when $.Category == 'Canceled',
+	(Canceled:0) when $.Category != 'Canceled'
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <foreach collection="#[payload]" doc:name="For Each">
+                            <set-payload value="#[payload]" doc:name="Set Payload"/>
+                            <set-variable variableName="element" value="#[payload]" doc:name="Variable"/>
+                            <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.CMtotalTimeCompleted}]]></db:parameterized-query>
+                            </db:select>
+                            <set-variable variableName="Total_Turnaround_Time_for_Account_Opened_Cases" value="#[payload[0].Total_Turnaround_Time_for_Account_Opened_Cases]" doc:name="Variable"/>
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveCMCompleted}]]></db:parameterized-query>
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryCMCompleted}]]></db:parameterized-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Account_Opened:$.Account_Opened,
+	Rejected:$.Rejected,
+	Canceled:$.Canceled,
+	(Total_Turnaround_Time_for_Account_Opened_Cases:$.Total_Turnaround_Time_for_Account_Opened_Cases) when $.Total_Turnaround_Time_for_Account_Opened_Cases != null,
+	(Total_Turnaround_Time_for_Account_Opened_Cases:0) when $.Total_Turnaround_Time_for_Account_Opened_Cases == null
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </otherwise>
+                </choice>
+
+
+                    </when>
+                    <when expression="flowVars.params.roleName=='CCC TH'">
+                         <set-variable variableName="managedRole" value="'CCC Agent'" doc:name="CCC_TH Charge"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
+---
+{
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Pending_CCC:$.appCount) when $.Category == 'Pending - CCC',
+	(Pending_CCC:0) when $.Category != 'Pending - CCC',
+	(Pending_Customer:$.appCount) when $.Category == 'Pending - Customer',
+	(Pending_Customer:0) when $.Category != 'Pending - Customer',
+	Total_No_of_Pending_Cases:sum ([$.appCount])
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                         <foreach collection="#[payload]" doc:name="For Each">
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveCCCTHInProgress}]]></db:parameterized-query>
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryCCCTHInProgress}]]></db:parameterized-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Pending-CCC:$.Pending_CCC,
+	Pending-Customer:$.Pending_Customer,
+	Total_No_of_Pending_Cases:$.Total_No_of_Pending_Cases, 
+	Average_Aging_Time:$.Average_Aging_Time
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </when>
+                    <otherwise>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+---
+{
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Case_Referred:$.appCount) when $.Category == 'Case Referred',
+	(Case_Referred:0) when $.Category != 'Case Referred',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected',
+	(Canceled:$.appCount) when $.Category == 'Canceled',
+	(Canceled:0) when $.Category != 'Canceled'
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                          <foreach collection="#[payload]" doc:name="For Each">
+                            <set-payload value="#[payload]" doc:name="Set Payload"/>
+                            <set-variable variableName="element" value="#[payload]" doc:name="Variable"/>
+                            <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.CCCTHtotalTimeCompleted}]]></db:parameterized-query>
+
+                            </db:select>
+                            <set-variable variableName="Total_Turnaround_Time_for_Case_Referrals" value="#[payload[0].Total_Turnaround_Time_for_Case_Referrals]" doc:name="Variable"/>
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveCCCTHCompleted}]]></db:parameterized-query>
+
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryCCCTHCompleted}]]></db:parameterized-query>
+
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Case_Referred:$.Case_Referred,
+	Rejected:$.Rejected,
+	Canceled:$.Canceled,
+	(Total_Turnaround_Time_for_Case_Referrals:$.Total_Turnaround_Time_for_Case_Referrals) when $.Total_Turnaround_Time_for_Case_Referrals != null,
+	(Total_Turnaround_Time_for_Case_Referrals:0) when $.Total_Turnaround_Time_for_Case_Referrals == null
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </otherwise>
+                </choice>
+
+                    </when>
+            <when expression="flowVars.params.roleName=='BA Lead'">
+                <set-variable variableName="managedRole" value="'BA'" doc:name="BA Lead Charge"/>
+                <choice doc:name="Choose By AppStatus">
+                    <when expression="flowVars.params.progress=='In Progress'">
+                        <dw:transform-message doc:name="In Progress Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+%function append(str1,str2) str1 ++ str2
+---
+{
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and appTimeMissing, 
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and appTimeMissing,
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and appTimeMissing,
+		(criteria:' AND ca.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTB,
+		(criteria:' AND ca.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and ETB,		
+		(criteria:' AND ca.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(ca.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when appTimeBetween and NTBETBnull			
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.inProgress}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var currentTime = flowVars.currentTime
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+    (Pending_BA:$.appCount) when $.Category == 'Pending - BA',
+	(Pending_BA:0) when $.Category != 'Pending - BA',
+	(Pending_BALead:$.appCount) when $.Category == 'Pending - BA Lead',
+	(Pending_BALead:0) when $.Category != 'Pending - BA Lead',
+	(Pending_BBO:$.appCount) when $.Category == 'Pending - BBO',
+	(Pending_BBO:0) when $.Category != 'Pending - BBO',
+	(Pending_SD:$.appCount) when $.Category == 'Pending - SD',
+	(Pending_SD:0) when $.Category != 'Pending - SD',
+	Total_No_of_Pending_Cases:sum ([$.appCount])
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                         <foreach collection="#[payload]" doc:name="For Each">
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveBALInProgress}]]></db:parameterized-query>
+
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryBALInProgress}]]></db:parameterized-query>
+
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Pending-BA:$.Pending_BA,
+	Pending-BA-Lead:$.Pending_BALead,
+	Pending-BBO:$.Pending_BBO,
+	Pending-SD:$.Pending_SD,
+	Total_No_of_Pending_Cases:$.Total_No_of_Pending_Cases, 
+	Average_Aging_Time:$.Average_Aging_Time
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </when>
+                    <otherwise>
+                        <dw:transform-message doc:name="Completed Transform">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var empty = ""
+%var NTBvalue = flowVars.params.appTypeNTB
+%var ETBvalue = flowVars.params.appTypeETB
+%var rpType = flowVars.params.rpType
+%var nonType = flowVars.params.nonType
+%var appointmentFrom = flowVars.params.appointmentFrom
+%var appointmentTo = flowVars.params.appointmentTo
+%var completedFrom = flowVars.params.completedFrom
+%var completedTo = flowVars.params.completedTo
+%var approvalFrom = flowVars.params.approvalFrom
+%var approvalTo = flowVars.params.approvalTo
+%var baFrom = flowVars.params.baFrom
+%var baTo = flowVars.params.baTo
+%var customerFrom = flowVars.params.customerFrom
+%var customerTo = flowVars.params.customerTo
+%var NTB = NTBvalue != empty and ETBvalue == empty
+%var ETB = ETBvalue != empty and NTBvalue == empty
+%var NTBETB = NTBvalue != empty and ETBvalue != empty
+%var NTBETBnull = NTBvalue == empty and ETBvalue == empty
+%var appTimeBetween = appointmentFrom != empty and appointmentTo != empty
+%var appTimeMissing = appointmentFrom == empty or appointmentTo == empty
+%var comTimeBetween = completedFrom != empty and completedTo != empty
+%var comTimeMissing = completedFrom == empty or completedTo == empty
+%var approvTimeBetween = approvalFrom != empty and approvalTo != empty
+%var approvTimeMissing = approvalFrom == empty or approvalTo == empty
+%var baTimeBetween = baFrom != empty and baTo != empty
+%var baTimeMissing = baFrom == empty or baTo == empty
+%var custTimeBetween = customerFrom != empty and customerTo != empty
+%var custTimeMissing = customerFrom == empty or customerTo == empty
+---
+{
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"') when NTB and comTimeMissing and appTimeMissing, 
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"') when ETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")') when NTBETB and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")') when NTBETBnull and comTimeMissing and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeMissing,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeMissing,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeMissing,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")' ++ ' AND UNIX_TIMESTAMP(aa.complete_time) >= UNIX_TIMESTAMP("' ++ completedFrom ++ '") AND UNIX_TIMESTAMP(aa.complete_time) <= UNIX_TIMESTAMP("' ++ completedTo ++ '")') when comTimeBetween and NTBETBnull and appTimeBetween,
+		(criteria:' AND capp.Application_Type IN ' ++ '("' ++ NTBvalue ++ '","' ++ ETBvalue ++ '")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETB  and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ NTBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTB and appTimeBetween,
+		(criteria:' AND capp.Application_Type = ' ++ '"' ++ ETBvalue ++ '"' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and ETB and appTimeBetween,		
+		(criteria:' AND capp.Application_Type NOT IN ("NTB","ETB")' ++ ' AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) >= UNIX_TIMESTAMP("' ++ appointmentFrom ++ '") AND UNIX_TIMESTAMP(capp.Appointment_Date_Time) <= UNIX_TIMESTAMP("' ++ appointmentTo ++ '")') when comTimeMissing and NTBETBnull and appTimeBetween
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                        <set-variable variableName="criteria" value="#[payload.criteria]" doc:name="Criteria"/>
+
+                        <db:select config-ref="MySQL_Configuration" streaming="true" doc:name="Database">
+                            <db:dynamic-query><![CDATA[${sql.completed}]]></db:dynamic-query>
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.handling_staff,
+	(Approved:$.appCount) when $.Category == 'Account opened' or $.Category == 'Approved',
+	(Approved:0) when $.Category != 'Account opened' and $.Category != 'Approved',
+	(Rejected:$.appCount) when $.Category == 'Rejected',
+	(Rejected:0) when $.Category != 'Rejected'
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                           <foreach collection="#[payload]" doc:name="For Each">
+                            <set-payload value="#[payload]" doc:name="Set Payload"/>
+                            <set-variable variableName="element" value="#[payload]" doc:name="Variable"/>
+                            <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.BALtotalTimeCompleted}]]></db:parameterized-query>
+
+                            </db:select>
+                            <set-variable variableName="Total_Turnaround_Time_for_Case_Approval" value="#[payload[0].Total_Turnaround_Time_for_Case_Approval]" doc:name="Variable"/>
+                            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
+                                <db:parameterized-query><![CDATA[${sql.saveBALCompleted}]]></db:parameterized-query>
+
+                            </db:insert>
+                        </foreach>
+                        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+                            <db:parameterized-query><![CDATA[${sql.queryBALCompleted}]]></db:parameterized-query>
+
+                        </db:select>
+                        <dw:transform-message doc:name="Transform Message">
+                            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload map {
+	Handling_Staff:$.Handling_Staff,
+    Approved:$.Approved,
+	Rejected:$.Rejected,
+	(Total_Turnaround_Time_for_Case_Approval:$.Total_Turnaround_Time_for_Case_Approval) when $.Total_Turnaround_Time_for_Case_Approval != null,
+	(Total_Turnaround_Time_for_Case_Approval:0) when $.Total_Turnaround_Time_for_Case_Approval == null
+}]]></dw:set-payload>
+                        </dw:transform-message>
+                    </otherwise>
+                </choice>
+            </when>
+                    <otherwise>
+                <set-payload value="{&quot;ErrorMsg&quot;:&quot;Wrong Role Login On&quot;}" doc:name="Set Payload"/>
+
+                    </otherwise>
+                </choice>
+        <set-variable variableName="finalResult" value="#[payload]" doc:name="FinalResult"/>
+        <db:delete config-ref="MySQL_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[DELETE FROM cos_tempmapping]]></db:parameterized-query>
+        </db:delete>
+
+        <set-payload value="#[flowVars.finalResult]" doc:name="Set Payload"/>
+        <logger message="#[flowVars.params.roleName]====#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+</mule>
