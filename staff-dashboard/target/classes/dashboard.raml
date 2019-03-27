@@ -10,7 +10,7 @@ schemas:
   checkList: !include schemas/checkList.json
   byRoleId: !include schemas/byRoleId.json
   saveAssignAgent: !include schemas/saveAssignAgent.json
-#µÇÂ½
+
 /userLogin:
   post:
     body:
@@ -117,6 +117,30 @@ schemas:
         body:
           application/json:
 /selectRecjectReason:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/progressFields:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/progressFilter:
+  post:
+    body:
+      application/json:
+    responses:
+      200:
+        body:
+          application/json:
+/getSession:
   post:
     body:
       application/json:

@@ -28,6 +28,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/reactivateStatus" action="post" content-type="application/json" flow-ref="reactivate"/>
         <apikit:flow-mapping resource="/getRejectedRoleName" action="post" content-type="application/json" flow-ref="getRejectedRoleName"/>
         <apikit:flow-mapping resource="/selectRecjectReason" action="post" content-type="application/json" flow-ref="selectRecjectReason"/>
+        <apikit:flow-mapping resource="/progressFields" action="post" content-type="application/json" flow-ref="dashboard-progressFields"/>
+        <apikit:flow-mapping resource="/progressFilter" action="post" content-type="application/json" flow-ref="dashboard-progressFilter"/>
+        <apikit:flow-mapping resource="/getSession" action="post" content-type="application/json" flow-ref="dashboard-getSession"/>
+
 
 
     </apikit:config>
@@ -39,8 +43,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <flow name="dashboard-login">
         <flow-ref name="login" doc:name="login"/>
     </flow>
+    <flow name="dashboard-getSession">
+        <flow-ref name="getSession" doc:name="getSession"/>
+    </flow>
     <flow name="dashboard-applications">
         <flow-ref name="applications" doc:name="applications"/>
+    </flow>
+	 <flow name="dashboard-progressFilter">
+        <flow-ref name="progressFilter" doc:name="progressFilter"/>
+    </flow>
+    <flow name="dashboard-progressFields">
+        <flow-ref name="progressFields" doc:name="progressFields"/>
     </flow>
     <flow name="dashboard-searchBy">
         <flow-ref name="searchBy" doc:name="searchBy"/>
