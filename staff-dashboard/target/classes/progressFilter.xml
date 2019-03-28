@@ -382,7 +382,7 @@ payload map {
 }]]></dw:set-payload>
                         </dw:transform-message>
                           <foreach collection="#[payload]" doc:name="For Each">
-                            <set-payload value="#[payload]" doc:name="Set Payload"/>
+
                             <set-variable variableName="element" value="#[payload]" doc:name="Variable"/>
                             <db:select config-ref="MySQL_Configuration" doc:name="Database">
                                 <db:parameterized-query><![CDATA[${sql.CCCTHtotalTimeCompleted}]]></db:parameterized-query>
@@ -583,7 +583,7 @@ payload map {
 }]]></dw:set-payload>
                         </dw:transform-message>
                            <foreach collection="#[payload]" doc:name="For Each">
-                            <set-payload value="#[payload]" doc:name="Set Payload"/>
+
                             <set-variable variableName="element" value="#[payload]" doc:name="Variable"/>
                             <db:select config-ref="MySQL_Configuration" doc:name="Database">
                                 <db:parameterized-query><![CDATA[${sql.BALtotalTimeCompleted}]]></db:parameterized-query>
