@@ -49,7 +49,7 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
+
                     </when>
                     <when expression="flowVars.params.roleName=='CCC TH'">
                         <choice doc:name="Choose By Status">
@@ -73,7 +73,7 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
+
                     </when>
                     <when expression="flowVars.params.roleName=='BA Lead'">
                         <choice doc:name="Choose By Status">
@@ -97,7 +97,7 @@ payload map {
                         </dw:transform-message>
                         <set-payload value="#[payload]" doc:name="Set Payload"/>
                         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-                        <logger message="#[flowVars.params.roleName]--------#[flowVars.params.progress]" level="INFO" doc:name="Logger"/>
+
                     </when>
                     <otherwise>
                         <set-payload value="{&quot;ErrorMsg&quot;:&quot;Invalid role!&quot;}" doc:name="Role Previlige Error"/>

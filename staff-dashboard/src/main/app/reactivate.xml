@@ -72,12 +72,13 @@ payload]]></dw:set-payload>
                 </transactional>
             </when>
             <otherwise>
-                <set-payload value="{&quot;msg&quot;:false}" doc:name="ErrorMsg"/>
+                <set-payload value="0" doc:name="setPayload=0"/>
             </otherwise>
         </choice>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <choice doc:name="Choice">
-            <when expression="payload=1">
+            <when expression="payload&gt;=1">
+                <logger message="#[applicationId]" level="INFO" doc:name="Logger"/>
                 <db:select config-ref="MySQL_Configuration" doc:name="Database">
                     <db:parameterized-query><![CDATA[SELECT STATUS FROM cos_application WHERE Application_ID = #[applicationId]]]></db:parameterized-query>
                 </db:select>

@@ -35,7 +35,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 
     </apikit:config>
-    <context:property-placeholder location="database/db.properties"/>
+    <context:property-placeholder location="database/cfg.properties"/>
+
     <flow name="dashboard-apiRouter">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/api/*" doc:name="HTTP"/>
         <apikit:router config-ref="Router" doc:name="APIkit Router"/>
@@ -74,10 +75,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <flow-ref name="saveAssignAgent" doc:name="saveAssignAgent"/>
     </flow>
     <flow name="dashboard-getRemarkList">
-        <flow-ref name="getRemarkList" doc:name="Flow Reference"/>
+        <flow-ref name="getRemarkList" doc:name="getRemarkList"/>
     </flow>
     <flow name="dashboard-saveRemark">
-        <flow-ref name="saveRemark" doc:name="Flow Reference"/>
+        <flow-ref name="saveRemark" doc:name="saveRemark"/>
     </flow>
     <flow name="dashboard-saveRejectReason">
         <flow-ref name="saveRejectReason" doc:name="saveRejectReason"/>
@@ -89,6 +90,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <flow-ref name="selectRecjectReason" doc:name="selectRecjectReason"/>
     </flow>
     <flow name="getRoleName">
-        <flow-ref name="getRejectedRoleName" doc:name="getRoleName"/>
+        <flow-ref name="getRejectedRoleName" doc:name="getRejectedRoleName"/>
     </flow>
 </mule>

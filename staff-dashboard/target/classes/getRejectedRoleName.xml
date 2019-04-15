@@ -32,7 +32,7 @@ payload]]></dw:set-payload>
 
         <logger level="INFO" doc:name="Logger" message="#[payload]"/>
         <choice doc:name="Choice">
-            <when expression="payload[0] != null">
+            <when expression="payload[0].role_name != null">
 
                 <dw:transform-message doc:name="Transform Message">
                     <dw:set-payload><![CDATA[%dw 1.0
