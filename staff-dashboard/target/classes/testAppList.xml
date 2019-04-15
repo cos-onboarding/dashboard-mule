@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <flow name="testAppList">
+
+
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function normalize(var) var replace " " with "_" replace "/" with "_"
+%var fileData = readUrl("classpath://roles/" ++ normalize(payload.roleName) ++ ".xml","application/xml")
+---
+COS_ROLE:{
+	roleName:fileData.COS_ROLE_MAP.COS_ROLE.@roleName,
+	workflow:fileData.COS_ROLE_MAP.COS_ROLE.*workflow map (item,index) -> {
+		workflowName:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].@workflowName,
+		applicationStatus:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus map (item,index1) -> {
+			statusName:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@statusName,
+			nextStatus:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@nextStatus,
+			previousStatus:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@previousStatus,
+			entryCurrentStatusDatetime:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@entryCurrentStatusDatetime,
+			leaveCurrentStatusDatetime:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@leaveCurrentStatusDatetime,
+			handler:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].@handler,
+			applicationField:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField map (item,index2) -> {
+				fieldName:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].@fieldName,
+				fieldId:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].@fieldId,
+				fieldElement:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].*fieldElement map (item,index3) -> {
+					elementName:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].*fieldElement[index3].@elementName,
+					elementId:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].*fieldElement[index3].@elementId,
+					text:fileData.COS_ROLE_MAP.COS_ROLE.*workflow[index].*applicationStatus[index1].*applicationField[index2].*fieldElement[index3]
+				}
+			}
+		}
+	},
+	COS_Section:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section map (item,index) -> {
+		sectionName:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].@sectionName,
+		sectionId:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].@sectionId,
+		applicationField:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField map (item,index1) -> {
+			fieldName:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].@fieldName,
+			fieldId:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].@fieldId,
+			fieldElement:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].*fieldElement map (item,index2) -> {
+				elementName:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].*fieldElement[index2].@elementName,
+				elementId:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].*fieldElement[index2].@elementId,
+				text:fileData.COS_ROLE_MAP.COS_ROLE.*COS_Section[index].*applicationField[index1].*fieldElement[index2]
+			}
+		}
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%var loginRole = flowVars.roleName
+%function normalize(var) var replace " " with "_"
+---
+payload.COS_ROLE.COS_Section[0].applicationField map (item,index) -> {
+	(columns:item.fieldElement map (item1,index1)-> {
+			(column:normalize(item1.elementName)) when item1.text != "No"
+		} filter $ != {}) when item.fieldName == "Search Result"
+} filter $ != {}]]></dw:set-payload>
+        </dw:transform-message>
+        <json:json-to-object-transformer returnClass="java.util.ArrayList" encoding="UTF-8" mimeType="application/java" doc:name="JSON to Object"/>
+        <set-payload value="#[payload[0].columns]" doc:name="Set Payload"/>
+        <scripting:transformer returnClass=" java.lang.String" doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[def list = payload;
+def str = "";
+for(int i=0;i<list.size()-1;i++){
+	str += list[i].get("column")+",";
+}
+str += list[list.size()-1].get("column");
+str.trim();
+return str;]]></scripting:script>
+        </scripting:transformer>
+        <db:select config-ref="MySQL_Configuration" doc:name="Database">
+            <db:dynamic-query><![CDATA[select #[payload] from cos_application]]></db:dynamic-query>
+        </db:select>
+
+        <dw:transform-message doc:name="Transform To Json">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+
+
+    </flow>
+</mule>

@@ -31,6 +31,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <apikit:flow-mapping resource="/progressFields" action="post" content-type="application/json" flow-ref="dashboard-progressFields"/>
         <apikit:flow-mapping resource="/progressFilter" action="post" content-type="application/json" flow-ref="dashboard-progressFilter"/>
         <apikit:flow-mapping resource="/getSession" action="post" content-type="application/json" flow-ref="dashboard-getSession"/>
+        <apikit:flow-mapping resource="/testXML" action="post" content-type="application/json" flow-ref="dashboard-testXML"/>
 
 
 
@@ -91,5 +92,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </flow>
     <flow name="getRoleName">
         <flow-ref name="getRejectedRoleName" doc:name="getRejectedRoleName"/>
+    </flow>
+    <flow name="dashboard-testXML">
+        <flow-ref name="testAppList" doc:name="testXML"/>
     </flow>
 </mule>

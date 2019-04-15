@@ -1,0 +1,336 @@
+#/userLogin
+{
+	"userName":"Michel",
+	"password":"1234"
+}
+{
+    "roleId": "cf4b464c3b3611e9b40a68f728192098",
+    "roleName": "BA",
+    "staffId": "0000169064"
+}
+#/searchResult
+{
+  "roleId":"946ed4103b3611e9b40a68f728192098"
+}
+[
+	{
+        "Application_ID": "e5948d543ff611e9944e68f728192098",
+        "Quick_View": "",
+        "Application_Type": "ETB",
+        "Entity_Type": "NPO",
+        "Company_Name": "ABC Limited",
+        "Customer_ID": "92988388322",
+        "Category": "Pending - BA",
+        "Status": "Under Review by BA",
+        "Remark": 0,
+        "Appointment_Date_Time": "2019-03-18T17:00:00",
+        "Confirmed_Venue": "Sheung Wan",
+        "Handling_Call_Agent": "Beatrice",
+        "Task_Due_Date": "2019-03-05T00:00:00",
+        "Document_Last_Upload_Date": "2019-03-05T00:00:00",
+        "Last_Modified_Date": "2019-03-05T00:00:00",
+        "Contact_Person": "Benny Wong",
+        "Contact_Number": "87782233",
+        "Screening_Completed_CCC": "NO",
+        "No_Clarification_with_Customer": "NO"
+    }
+]
+#/summary
+{
+	"roleId":"9e955dfc3b3611e9b40a68f728192098"
+}
+[
+    {
+        "total": 21,
+        "status": "Account Opened"
+    }
+]
+#/fields
+{
+	"roleId":"9e955dfc3b3611e9b40a68f728192098"
+}
+[
+	{
+        "field": "Application_ID",
+        "title": "Application ID"
+    }
+]
+#/searchBy
+{
+	"roleId":"bd35356d3b3611e9b40a68f728192098"
+}
+[
+    "Business Center",
+    "Status",
+    "Customer Name",
+    "Application Number",
+    "Customer ID",
+    "BBO Assigned"
+]
+#/checkList
+{
+	"roleId":"946ed4103b3611e9b40a68f728192098",
+	"status":"Pending for Handling"
+}
+[
+    "Completed CDS Checking",
+    "No Clarification with Customer BBO"
+]
+#/assign
+{
+  "role_name":"CCC TH"
+}
+[
+    {
+        "staffId": "0000100232",
+        "staffName": "Roth"
+    },
+    {
+        "staffId": "0000100039",
+        "staffName": "Aaron"
+    },
+    {
+        "staffId": "0000101027",
+        "staffName": "Beatrice"
+    },
+    {
+        "staffId": "0000103402",
+        "staffName": "Candy"
+    }
+]
+#/saveAssignAgent
+{
+  "staffId": "0000100037",
+  "inboxAppList": [
+    {
+     
+      "Application_ID": "a9eadaa33ef511e9944e68f728192098",
+      "Application_Type": "ETB",
+      "Entity_Type": "Corporate",
+      "Company_Name": "Pacific Coffee Ltd",
+      "Customer_ID": "91988388344"
+      
+    },
+    {
+     
+	      "Application_ID": "f64965fc3ef511e9944e68f728192098",
+      "Application_Type": "NTB",
+      "Entity_Type": "NPO",
+      "Company_Name": "Something",
+      "Customer_ID": "80903558936"
+      
+    }
+  ]
+}
+{
+    "status": "success"
+}
+#/progressFields
+{
+	"roleId":"",
+	"roleName":"BBC CM/TH",
+	"progress":"In Progress",
+	"approvalFrom":"2019-03-05 00:00:00",
+	"approvalTo":"2019-03-25 11:30:00",
+	"baFrom":"2019-03-05 00:00:00",
+	"baTo":"2019-03-25 11:30:00",
+	"appTypeNTB":"NTB",
+	"appTypeETB":"ETB",
+	"appointmentFrom":"2019-03-05 00:00:00",
+	"appointmentTo":"2019-03-25 11:30:00",
+	"completedFrom":"2019-03-05 00:00:00",
+	"completedTo":"2019-03-25 11:30:00",
+	"rpType":"RP",
+	"nonType":"Non-type",
+	"customerFrom":"2019-03-05 00:00:00",
+	"customerTo":"2019-03-25 11:30:00"
+}
+[
+    {
+        "field": "Handling_Staff",
+        "title": "Handling Staff"
+    }
+]
+#/progressFilter
+{
+	"roleId":"",
+	"roleName":"BA Lead",
+	"progress":"In Progress",
+	"approvalFrom":"2019-03-05 00:00:00",
+	"approvalTo":"2019-03-22 11:30:00",
+	"baFrom":"2019-03-05 00:00:00",
+	"baTo":"2019-03-22 11:30:00",
+	"appTypeNTB":"NTB",
+	"appTypeETB":"ETB",
+	"appointmentFrom":"2019-03-05 00:00:00",
+	"appointmentTo":"2019-03-31 11:30:00",
+	"completedFrom":"2019-03-05 00:00:00",
+	"completedTo":"2019-03-31 11:30:00",
+	"rpType":"RP",
+	"nonType":"Non-type",
+	"customerFrom":"2019-03-05 00:00:00",
+	"customerTo":"2019-03-22 11:30:00"
+}
+[
+    {
+        "Handling_Staff": "Daniel",
+        "Pending-BA": 149,
+        "Pending-BA-Lead": 0,
+        "Pending-BBO": 0,
+        "Pending-SD": 0,
+        "Total_No_of_Pending_Cases": 149,
+        "Average_Aging_Time": 25.7
+    },
+    {
+        "Handling_Staff": "Michel",
+        "Pending-BA": 343,
+        "Pending-BA-Lead": 0,
+        "Pending-BBO": 0,
+        "Pending-SD": 14,
+        "Total_No_of_Pending_Cases": 357,
+        "Average_Aging_Time": 25.7
+    }
+]
+#/getSession
+{
+	"request":"200"
+}
+[
+    {
+        "message": "Success"
+    }
+]
+#/applist    TEST XML
+{
+	"roleName":"BBC CM/TH"
+}
+[
+	{
+        "Contact_Person": "Amanda",
+        "Application_ID": "00fa34dc3ef711e9944e68f728192098",
+        "Application_Type": "ETB",
+        "Confirmed_Venue": "Sheung Wan",
+        "Contact_Number": "87782233",
+        "Category": "Pending - Customer",
+        "Last_Modified_Date": "2019-03-05T00:00:00",
+        "Status": "Pending - Missing Documents from Customer (CCC)",
+        "Remark": "",
+        "Account_Number": "3777388222",
+        "New_Document_Uploaded": "NO",
+        "Handling_BBO": "Jacky Hok Yau Cheung",
+        "Urgency": "Urgent",
+        "Entity_Type": "Corporate",
+        "All_Document_Uploaded": "NO",
+        "Screening_Completed_BBO": "NO",
+        "Referral_Source": "Mass",
+        "Company_Name": "Pacific Coffee Ltd",
+        "Customer_ID": "48417051859",
+        "Received_Date": "2019-03-05T13:25:00",
+        "Appointment_Date_Time": "2019-03-18T17:00:00",
+        "Form_Completed": "Yes"
+    }
+]
+#/getRemark
+{
+	"applicationId":"000384c93f1211e9944e68f728192098"
+}
+[
+    {
+        "remark_date": "15 March 2019 18:58",
+        "remark_cause": "This customer cannot understand Chinese.",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Roth"
+    },
+    {
+        "remark_date": "19 March 2019 15:00",
+        "remark_cause": "this",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Emma"
+    },
+    {
+        "remark_date": "19 March 2019 15:07",
+        "remark_cause": "this you",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Emma"
+    },
+    {
+        "remark_date": "19 March 2019 15:27",
+        "remark_cause": "thisdasdsadasd",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Emma"
+    },
+    {
+        "remark_date": "20 March 2019 11:49",
+        "remark_cause": "this you to",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Emma"
+    },
+    {
+        "remark_date": "20 March 2019 11:50",
+        "remark_cause": "what a you",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Emma"
+    },
+    {
+        "remark_date": "20 March 2019 15:37",
+        "remark_cause": "who are you",
+        "application_id": "000384c93f1211e9944e68f728192098",
+        "staff_name": "Roth"
+    }
+]
+#/saveRemark
+{
+	"remarkCause":"This customer cannot understand Chinese.",
+	"staffId":"0000106226",
+	"applicationId":"123d664e3ef711e9944e68f728192098"
+}
+
+
+#/saveRejectReason
+{
+	"Appcation_ID":"1e3bec5d408411e9944e68f728192098",
+	"reject_staff":"Beatrice",
+	"reject_category":"",
+	"reject_email":"",
+	"reject_reason":"conflict with HASE roles",
+	"isEnhanced":"yes",
+	"isNexus":"no",
+	"reject_date":"2019-03-10 10:00:00"
+}
+{
+    "msg": "success"
+}
+
+#/selectRecjectReason
+{
+	"Application_ID":"1e3bec5d408411e9944e68f728192098"
+}
+[
+    {
+        "reject_date": "2019-03-10 10:00:00",
+        "reject_staff": "Beatrice",
+        "reject_category": "",
+        "reject_reason": "conflict with HASE roles",
+        "reject_isEnhanced": "yes",
+        "reject_isNexus": "no"
+    }
+]
+
+#/getRejectedRoleName
+{
+	"applicationId":"1e3bec5d408411e9944e68f728192098"
+}
+{
+    "roleName": "CCC Agent"
+}
+
+#/reactivateStatus
+{
+	"applicationId":"1e3bec5d408411e9944e68f728192098",
+	"roleName":"BBC_CM/TH"
+}
+
+{
+    "status": "Pending RSO allocation",
+    "msg": "Status Changed"
+}

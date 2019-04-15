@@ -1,0 +1,1862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COS_ROLE_MAP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/xsd/HASE_COS_ROLE_MAP.xsd">
+	<COS_ROLE roleName="BBC CM/TH">
+		<workflow workflowName="COS Mass">
+			<applicationStatus statusName="Pending For Customer Submission" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+					<fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">No</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">No</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">No</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">No</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="SD" elementId="String">No</fieldElement>
+					<fieldElement elementName="BA" elementId="String">No</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending - missing documents from customer (CCC)" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">No</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">No</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">No</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">No</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="SD" elementId="String">No</fieldElement>
+					<fieldElement elementName="BA" elementId="String">No</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending - missing docuemnts from customer" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending CCC Allocation" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">No</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">No</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">No</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">No</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="SD" elementId="String">No</fieldElement>
+					<fieldElement elementName="BA" elementId="String">No</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending for Handling" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">No</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">No</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">No</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">No</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="SD" elementId="String">No</fieldElement>
+					<fieldElement elementName="BA" elementId="String">No</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending RSO Allocation" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending Client Meeting" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="BBO Processing" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">No</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">No</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">No</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Follow up by BBO – Pre-submission" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">'No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">'No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="KYC Follow up by BBO – SD" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="BA Follow up by BBO – BA" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="OBS maintenance follow up by BBO" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">No</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Under Review by CM" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes, editable</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Save" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">Yes</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Preprocessing" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Under review by SD" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Follow up received from BBO - SD" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Case returned by BA" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Case assign by BA" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Under Lvl 2 Approval by BA Lead" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Under review by BA" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Follow up returned to BA" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="OBS maintenance" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">No</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Account opened" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Canceled" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Rejected" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+			<applicationStatus statusName="Pending CM endorsement" nextStatus="String" previousStatus="String" entryCurrentStatusDatetime="String" leaveCurrentStatusDatetime="String" handler="String">
+				<applicationField fieldName="Application Level Info" fieldId="String">
+					<fieldElement elementName="Company Name" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Application ID" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Assigned To" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Check List" fieldId="String">
+					<fieldElement elementName="Screening Completed (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (CCC)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Form Completed (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Screening (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="FATCA / CRS (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Uploaded (system check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="All Documents Validated (manual check)" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed CDS Checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Customer (BBO)" elementId="String">No</fieldElement>
+					<fieldElement elementName="GWIS item created" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed FATCA QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="Completed KYC QC checking" elementId="String">No</fieldElement>
+					<fieldElement elementName="No Clarification with Frontline (SD)" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Approved" elementId="String">No</fieldElement>
+					<fieldElement elementName="CRT Level 2 Approved (Only show for high risk cases)" elementId="String">No</fieldElement>
+					<fieldElement elementName="OBS Profile Created" elementId="String">No</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Status Change Buttons" fieldId="String">
+					<fieldElement elementName="Preprocessing" elementId="String">No</fieldElement>
+					<fieldElement elementName="Reject" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Seek for CM endorsement" elementId="String">No</fieldElement>
+                    <fieldElement elementName="Pass back to BBO after CM endorsement" elementId="String">Yes, editable</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Application Level Buttons" fieldId="String">
+					<fieldElement elementName="Form" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Documents" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Email Applicant" elementId="String">Yes, editable</fieldElement>
+					<fieldElement elementName="Appointment" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Change Log" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Handling Staff" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Remarks" elementId="String">Yes, editable</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Form Level Button" fieldId="String">
+					<fieldElement elementName="Print" elementId="String">No</fieldElement>
+					<fieldElement elementName="Save" elementId="String">No</fieldElement>
+					<fieldElement elementName="Customer View" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="Import From Smart Form" elementId="String">No</fieldElement>
+					<fieldElement elementName="Editable Question Set" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Question Set" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Documents" fieldId="String">
+					<fieldElement elementName="Editable (Add View Delete) Documents " elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only Documents" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Appointment" fieldId="String">
+					<fieldElement elementName="Book Slot" elementId="String">No</fieldElement>
+					<fieldElement elementName="Assign BBO" elementId="String">No</fieldElement>
+					<fieldElement elementName="Edit Appointment [Change time/date/BBC/BBO]" elementId="String">No</fieldElement>
+					<fieldElement elementName="View Only" elementId="String">Yes</fieldElement>
+				</applicationField>
+				<applicationField fieldName="Handling Staff" fieldId="String">
+					<fieldElement elementName="CCC Agent" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BBO" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="SD" elementId="String">Yes</fieldElement>
+					<fieldElement elementName="BA" elementId="String">Yes</fieldElement>
+				</applicationField>
+			</applicationStatus>
+		</workflow>
+		<COS_Section sectionName="Application List" sectionId="String">
+			<applicationField fieldName="(Default applications selection criteria)" fieldId="String">
+				<fieldElement elementName="my cases" elementId="String">cases assigned to my BBC</fieldElement>
+			</applicationField>
+			<applicationField fieldName="Search by" fieldId="String">
+				<fieldElement elementName="Business Center" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Status" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Customer Name" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Application Number" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Customer ID" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="BBO Assigned" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Account number" elementId="String">No</fieldElement>
+				<fieldElement elementName="Appointment Date" elementId="String">No</fieldElement>
+				<fieldElement elementName="CCC Agent Assigned" elementId="String">No</fieldElement>
+				<fieldElement elementName="BA Assigned" elementId="String">No</fieldElement>
+				<fieldElement elementName="BA level 2 approval Assigned" elementId="String">No</fieldElement>
+				<fieldElement elementName="SD Assigned" elementId="String">No</fieldElement>
+				<fieldElement elementName="Temp CIN" elementId="String">No</fieldElement>
+			</applicationField>
+			<applicationField fieldName="My Summary" fieldId="String">
+				<fieldElement elementName="All My Cases (e.g. all cases related to me)" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="OBS Maintenance" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Under Review by BA" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Follow Up Returned to BA" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Case Assign by BA" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Under Lvl 2 Approval by BA Lead" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Under Review by SD" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Follow Up by Received from BBO - SD" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Case Returned by BA" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Preprocessing" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Under Review by CM" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Pending Client Meeting" elementId="String">No</fieldElement>
+				<fieldElement elementName="BBO Processing" elementId="String">No</fieldElement>
+				<fieldElement elementName="BA Follow Up by BBO - BA" elementId="String">No</fieldElement>
+				<fieldElement elementName="Follow Up by BBO - Pre-submission" elementId="String">No</fieldElement>
+				<fieldElement elementName="KYC Follow Up by BBO - SD" elementId="String">No</fieldElement>
+				<fieldElement elementName="OBS Maintenance Follow Up by BBO" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending RSO Allocation" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending for Handling" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending for Customer Submission" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending CCC Allocation" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending - Missing Documents from Customer (CCC)" elementId="String">No</fieldElement>
+				<fieldElement elementName="Pending - Missing Documents from Customer " elementId="String">No</fieldElement>
+				<fieldElement elementName="Rejected" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Canceled" elementId="String">Yes</fieldElement>
+				<fieldElement elementName="Account Opened" elementId="String">Yes</fieldElement>
+			</applicationField>
+			<applicationField fieldName="Action Buttons" fieldId="String">
+				<fieldElement elementName="Assign Call Agent" elementId="String">No</fieldElement>
+				<fieldElement elementName="Assign BA" elementId="String">No</fieldElement>
+				<fieldElement elementName="Assign SD" elementId="String">No</fieldElement>
+				<fieldElement elementName="Create Application" elementId="String">No</fieldElement>
+			</applicationField>
+			<applicationField fieldName="Search Result" fieldId="String">
+				<fieldElement elementName="(Checkboxes)" elementId="String">No</fieldElement>
+				<fieldElement elementName="Application ID" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Application Type" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Entity Type" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Company Name" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Customer ID" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Category" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Status" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Remark" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Appointment Date Time" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Confirmed Venue" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Handling Call Agent" elementId="String">No</fieldElement>
+				<fieldElement elementName="Task Due Date" elementId="String">No</fieldElement>
+				<fieldElement elementName="Document Last Upload Date (only applicable to CCC for documents uploaded in portal)" elementId="String">No</fieldElement>
+				<fieldElement elementName="Last Modified Date" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Received Date" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Referral Source" elementId="String">Quick View Box</fieldElement>
+				<fieldElement elementName="Account Number" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Urgency" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Contact Person" elementId="String">Quick View Box</fieldElement>
+				<fieldElement elementName="Contact Number" elementId="String">Quick View Box</fieldElement>
+				<fieldElement elementName="Handling BBO" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Handling SD" elementId="String">No</fieldElement>
+				<fieldElement elementName="Handling BA" elementId="String">No</fieldElement>
+				<fieldElement elementName="Temp CIN" elementId="String">No</fieldElement>
+				<fieldElement elementName="All Document Uploaded" elementId="String">Column</fieldElement>
+				<fieldElement elementName="New Document Uploaded" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Form Completed" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Screening Completed BBO" elementId="String">Column</fieldElement>
+				<fieldElement elementName="Screening Completed CCC" elementId="String">No</fieldElement>
+				<fieldElement elementName="No Clarification with Customer" elementId="String">No</fieldElement>
+			</applicationField>
+		</COS_Section>
+	</COS_ROLE>
+</COS_ROLE_MAP>
